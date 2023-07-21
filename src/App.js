@@ -43,6 +43,7 @@ function App() {
                   <Route  path={URL_ADMIN+"/dashboard"} element={iAdmin(null,false)}/>
                   <Route  path={URL_ADMIN+"/login"}  element={iAdmin(<AdminLogin/>,true)}/>
                   <Route  path='*' Component={NotFound}/>
+                  {/* check merge */}
                 </Routes>
             </BrowserRouter>
           </UserProvider>
