@@ -3,7 +3,8 @@ const STATE={
     favourites:[],
     token:null,
     loading:false,
-    afterScript:[]
+    afterScript:[],
+    userStyle:null
 }
 
 export default STATE;
