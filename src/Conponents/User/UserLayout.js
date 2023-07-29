@@ -1,7 +1,6 @@
 import FOOTER from "./footer";
 import HEADER from "./header";
 import React,{useEffect} from "react";
-import UserLinkCss from "./Script-Css/linkcss";
 
 
 
@@ -9,7 +8,6 @@ const UserLayout =  (props)=>{
 
     return (
         <html>
-            <UserLinkCss/>
             <body>
                 <div class="page-wrapper">
                     {/* <div class="notification" style={{backgroundImage:"url(../user/assets/images/demos/demo-21/notification-back.jpg)"}}>
