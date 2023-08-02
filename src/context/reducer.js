@@ -12,6 +12,9 @@ const reducer=(state,action)=>{// custom action: {type:...,payload:...}
         case "ADD_USTYLE":return {
             ...state,userStyle:action.payload
         }
+        case "ADD_TOKEN" :return {
+            ...state,token:action.payload
+        }
         default: return state;
     }
 }
