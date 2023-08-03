@@ -1,3 +1,4 @@
+import Login from "../../Pages/User/auth/RegisterLogin";
 import FOOTER from "./footer";
 import HEADER from "./header";
 import React,{useEffect} from "react";
@@ -201,8 +202,9 @@ const UserLayout =  (props)=>{
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true"><i class="icon-close"></i></span>
                                 </button>
+                                <Login/>
 
-                                <div class="form-box">
+                                {/* <div class="form-box">
                                     <div class="form-tab">
                                         <ul class="nav nav-pills nav-fill" role="tablist">
                                             <li class="nav-item">
@@ -301,7 +303,8 @@ const UserLayout =  (props)=>{
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
+
                             </div>
                         </div>
                     </div>
