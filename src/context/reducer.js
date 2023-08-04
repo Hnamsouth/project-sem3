@@ -6,6 +6,12 @@ const reducer=(state,action)=>{// custom action: {type:...,payload:...}
         case "SHOW_LOADING" :return {
             ...state,loading:true
         };
+        case "HIDE_AUTH_MODAL" :return  {
+            ...state,AuthModal:false
+        };
+        case "SHOW_AUTH_MODAL" :return {
+            ...state,AuthModal:true
+        };
         case "ADD_SCRIPT":return {
             ...state,afterScript:action.payload
         }

@@ -5,7 +5,8 @@ const STATE={
     token:token,
     loading:false,
     afterScript:[],
-    userStyle:null
+    userStyle:null,
+    AuthModal:false
 }
 
 export default STATE;

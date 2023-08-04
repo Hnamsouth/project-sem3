@@ -1,5 +1,5 @@
 import { GoogleLogin  } from '@react-oauth/google';
-import React,{useContext} from 'react';
+import React,{useContext, useState} from 'react';
 import jwt_decode from "jwt-decode";
 
 import { useForm } from "react-hook-form"
@@ -36,11 +36,10 @@ const Login =()=>{
         localStorage.setItem("token",rs.token)
         setTimeout(()=>{
             dispatch({type:"HIDE_LOADING"});
-        },1000)
+        },1000);
+        dispatch({type:"HIDE_AUTH_MODAL"});
         navigate("/u-profile");
     }
-
-
     return (
             <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
                                     <form method='post' onSubmit={handleSubmit(LoginSubmit)}>
@@ -57,7 +56,7 @@ const Login =()=>{
                                         </div>
 
                                         <div class="form-footer">
-                                            <button type="submit" class="btn btn-outline-primary-2">
+                                            <button type="submit" class="btn btn-outline-primary-2" on>
                                                 <span>LOG IN</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>

@@ -44,6 +44,16 @@ export const CheckEmail = async (email) =>{
     }
 }
 
+export const CheckToken = async () =>{
+    const url = "auth/check-token";
+    try {
+        let rs = await api.post(url);
+        return rs.data;
+    } catch (error) {
+        
+    }
+}
+
 export const getProfile = async ()=>{
     try {
         let url ="auth/profile";
@@ -53,5 +63,7 @@ export const getProfile = async ()=>{
         return {};
     }
 }
+
+
 
 

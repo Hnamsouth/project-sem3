@@ -6,14 +6,12 @@ import { getProfile } from "../../../Service/auth.service";
 const Uprofile = (props)=>{
     const {state,dispatch}=useContext(UserContext);
     const [user,setUser]=useState({Id:"",Email:""});
-    const [asd,setAsd]=useState([]);
 
 
     const getP = async ()=>{
         var u = await  getProfile();
         setUser(u);
         let token = localStorage.getItem("token")
-        console.log({statetoken:state.token});
         dispatch({type:"HIDE_LOADING"})
     }
 
