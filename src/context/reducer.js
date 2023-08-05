@@ -12,6 +12,12 @@ const reducer=(state,action)=>{// custom action: {type:...,payload:...}
         case "SHOW_AUTH_MODAL" :return {
             ...state,AuthModal:true
         };
+        case "SHOW_LOGIN" :return  {
+            ...state,AuthForm:true
+        };
+        case "SHOW_REGISTER" :return {
+            ...state,AuthForm:false
+        };
         case "ADD_SCRIPT":return {
             ...state,afterScript:action.payload
         }

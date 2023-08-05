@@ -1,6 +1,4 @@
-
 const HomeU=()=>{
-        
     return (
         <main class="main">
                         <div class="intro-slider-container mb-5">

@@ -1,6 +1,6 @@
 
 import { GoogleOAuthProvider} from '@react-oauth/google';
-import React,{ useContext } from 'react';
+import React,{ useContext, useState } from 'react';
 
 import Register from './register';
 import Login from './login';
@@ -23,10 +23,10 @@ const RegisterLogin = (props)=>{
                         <div class="form-tab">
                             <ul class="nav nav-pills nav-fill" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                                    <a class={state.AuthForm?"nav-link active":"nav-link"} id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                                    <a class={!state.AuthForm?"nav-link active":"nav-link"} id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="tab-content-5">

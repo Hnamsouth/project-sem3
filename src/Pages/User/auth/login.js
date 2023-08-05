@@ -41,7 +41,7 @@ const Login =()=>{
         navigate("/u-profile");
     }
     return (
-            <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+            <div class={state.AuthForm?"tab-pane fade show active":"tab-pane fade"} id="signin" role="tabpanel" aria-labelledby="signin-tab">
                                     <form method='post' onSubmit={handleSubmit(LoginSubmit)}>
                                         <div class="form-group">
                                             <label for="singin-email">Enter Email address *</label>

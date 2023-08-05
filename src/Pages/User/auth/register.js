@@ -35,7 +35,7 @@ const Register= () =>{
     const {register,handleSubmit,formState:{errors}}=useForm({
         resolver:yupResolver(schema),
     })
-    const RegisterSubmmit = async (data)=>{
+    const RegisterSubmmit = async (data,withGG)=>{
         dispatch({type:"SHOW_LOADING"})
         await Uregister(data).then(e=>{
             if(e){navigate("/login")}
@@ -43,8 +43,17 @@ const Register= () =>{
         })
         dispatch({type:"HIDE_LOADING"})
     }
+    const RegisterSubmmitGG = async (data)=>{
+        let check=false;
+        await CheckEmail(data.email).then(e=>check=e);
+        console.log(check)
+    }
+    function CheckForm(){
+        console.log(state.AuthForm)
+        dispatch({type:"SHOW_REGISTER"})
+    }
     return (
-        <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+        <div class={!state.AuthForm?"tab-pane fade show active":"tab-pane fade"} id="register" role="tabpanel" aria-labelledby="register-tab">
                                     <form  onSubmit={handleSubmit(RegisterSubmmit)} method='post'>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -109,7 +118,7 @@ const Register= () =>{
                                             <GoogleLogin
                                                     onSuccess={credentialResponse => {
                                                     var decoded= jwt_decode(credentialResponse.credential)
-                                                    RegisterSubmmit(decoded);
+                                                    RegisterSubmmitGG(decoded);
                                                 }}
                                                 onError={() => {
                                                     alert('Login Failed');
@@ -117,6 +126,7 @@ const Register= () =>{
                                             />
                                         </div>
                                     </div>
+                                    <button type='button' class="btn" onClick={CheckForm}>check</button>
                                 </div>
     );
 
