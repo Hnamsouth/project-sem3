@@ -8,6 +8,7 @@ import {BrowserRouter, Routes,Route} from 'react-router-dom';
 import UserLayout from './Conponents/User/UserLayout';
 import HomeU from './Pages/User/home';
 import NotFound from './Pages/NotFound';
+import Cart from './Pages/Cart/cart';
 const URL_USER="/user-lord"
 
 
@@ -25,6 +26,7 @@ function App() {
                   <Route  path='/contact' element={iUser(<HomeU/>,false)}/>
                   <Route  path='/about-us' element={iUser(<HomeU/>,false)}/>
                   <Route  path='/product' element={iUser(<HomeU/>,false)}/>
+                  <Route  path='/cart' element={iUser(<Cart/>,false)}/>
                   {/* User Route */}
                   <Route path={URL_USER+"/asd"} element={iUser(<HomeU/>,false)}/>
                   <Route path='*' Component={NotFound}/>

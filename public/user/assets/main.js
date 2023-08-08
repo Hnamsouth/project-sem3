@@ -52,6 +52,20 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$('html, body').animate({scrollTop: $('.section-support').offset().top}, 1200);
 	});
+	
+	// decrement and increment
+	$('.btn-decrement').on('click',function(e){
+		var value = $('.buyqty').val()
+		$('.buyqty').val(value-1)
+		console.log(value);
+
+	})
+	$('.btn-increment').on('click',function(e){
+		var value = $('.buyqty').val()
+		$('.buyqty').val(value+1)
+		console.log(value);
+
+	})
 });
 
 jQuery(window).on('load', function() {
