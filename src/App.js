@@ -11,6 +11,8 @@ import NotFound from './Pages/NotFound';
 import CartU from './Pages/User/cart';
 import CheckoutU from './Pages/User/checkout';
 import ProductPage from './Pages/User/productPage';
+import Login from './Pages/User/auth/login';
+import Uprofile from './Pages/User/auth/Profile';
 const URL_USER="/user-lord"
 
 
@@ -24,23 +26,25 @@ function App() {
             <BrowserRouter>
                 <Routes>
                   {/*  client Route  */}
-                  <Route exact path='/' element={iUser(<HomeU/>,false) } />
-                  <Route  path='/contact' element={iUser(<HomeU/>,false)}/>
-                  <Route  path='/about-us' element={iUser(<HomeU/>,false)}/>
-                  <Route  path='/product' element={iUser(<ProductPage/>,false)}/>
-                  <Route path='/cart' element={iUser(<CartU/>,false)}/>
-                  <Route path='/checkout' element={iUser(<CheckoutU/>,false)}/>
+                  <Route exact path='/' element={UserLO(<HomeU/>) } />
+                  <Route  path='/contact' element={UserLO(<HomeU/>)}/>
+                  <Route  path='/about-us' element={UserLO(<HomeU/>)}/>
+                  <Route  path='/product' element={UserLO(<HomeU/>)}/>
+
+                  {/* user */}
+                  <Route path='/login' element={UserLO(<Login/>)}/>
+                  <Route path='/u-profile' element={UserLO(<Uprofile/>)}/>
                   {/* User Route */}
-                  <Route path={URL_USER+"/asd"} element={iUser(<HomeU/>,false)}/>
+                  <Route path={URL_USER+"/asd"} element={UserLO(<HomeU/>)}/>
                   <Route path='*' Component={NotFound}/>
                 </Routes>
             </BrowserRouter>
           </UserProvider>
   );
 }
-function iUser(page,auth){
+function UserLO(page){
   return (
-    <UserLayout main={page} auth={auth}/>
+    <UserLayout main={page}/>
   );
 }
 
