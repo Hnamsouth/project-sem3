@@ -14,6 +14,7 @@ import RegisterLogin from './Pages/User/auth/RegisterLogin';
 import api from './Service/api';
 import { CheckToken } from './Service/auth.service';
 import RouteProtected from './Pages/User/auth/Protected';
+import UploadWiget from './Pages/UploadWidget';
 const prepareRouter = (path,element,auth,child)=>{
   return {
     path:path,
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
   prepareRouter("/login",<RegisterLogin/>,false),
   prepareRouter("/u-profile",<Uprofile/>,true),
   prepareRouter("/verify-email",<VerifyEmail/>,true),
+  prepareRouter("/upload",<UploadWiget/>,false),
 
   prepareRouter("*",<NotFound/>,false),
 ]);
