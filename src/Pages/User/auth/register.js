@@ -37,12 +37,17 @@ const Register= () =>{
     })
     const RegisterSubmmit = async (data,withGG)=>{
         dispatch({type:"SHOW_LOADING"})
-        await Uregister(data).then(e=>{
-            if(e){navigate("/login")}
-            else{alert("Register failed")}
-        })
+        let rs = await Uregister(data);
+        if(rs){
+            dispatch({type:"HIDE_AUTH_MODAL"});
+            navigate("/login");
+        }else{
+            alert("faild")
+        }
         dispatch({type:"HIDE_LOADING"})
+            
     }
+        // dispatch({type:"HIDE_LOADING"})
     const RegisterSubmmitGG = async (data)=>{
         let check=false;
         await CheckEmail(data.email).then(e=>check=e);
