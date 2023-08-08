@@ -1,4 +1,21 @@
-const CartU=()=>{
+import { useContext, useState } from "react";
+import UserContext from "../../context/userContext";
+import { Button } from "react-bootstrap";
+
+const CartU=(props)=>{
+  const {state,dispatch} = useContext(UserContext);
+    let total = 0;
+    const cart = state.cart;
+    const removeP = (p)=>{
+        let newCart = [];
+        cart.map(e=>{
+            if(e.id != p.id){
+                newCart.push(e);
+            }
+        });
+        // setState({state,cart:newCart});
+        dispatch({type:"UPDATE_CART",payload:newCart});
+    }
     return (
         <main className="main">
   <div className="page-header text-center" style={{backgroundImage: 'url("assets/images/page-header-bg.jpg")'}}>
@@ -31,51 +48,25 @@ const CartU=()=>{
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="product-col">
-                    <div className="product">
-                      <figure className="product-media">
-                        <a href="#">
-                          <img src="assets/images/products/table/product-1.jpg" alt="Product image" />
-                        </a>
-                      </figure>
-                      <h3 className="product-title">
-                        <a href="#">Beige knitted elastic runner shoes</a>
-                      </h3>{/* End .product-title */}
-                    </div>{/* End .product */}
-                  </td>
-                  <td className="price-col">$84.00</td>
-                  <td className="quantity-col">
-                    <div className="cart-product-quantity">
-                      <input type="number" className="form-control" defaultValue={1} min={1} max={10} step={1} data-decimals={0} required style={{display: 'none'}} /><div className="input-group  input-spinner"><div className="input-group-prepend"><button style={{minWidth: '26px'}} className="btn btn-decrement btn-spinner" type="button"><i className="icon-minus" /></button></div><input type="text" style={{textAlign: 'center'}} className="form-control " required placeholder /><div className="input-group-append"><button style={{minWidth: '26px'}} className="btn btn-increment btn-spinner" type="button"><i className="icon-plus" /></button></div></div>
-                    </div>{/* End .cart-product-quantity */}
-                  </td>
-                  <td className="total-col">$84.00</td>
-                  <td className="remove-col"><button className="btn-remove"><i className="icon-close" /></button></td>
-                </tr>
-                <tr>
-                  <td className="product-col">
-                    <div className="product">
-                      <figure className="product-media">
-                        <a href="#">
-                          <img src="assets/images/products/table/product-2.jpg" alt="Product image" />
-                        </a>
-                      </figure>
-                      <h3 className="product-title">
-                        <a href="#">Blue utility pinafore denim dress</a>
-                      </h3>{/* End .product-title */}
-                    </div>{/* End .product */}
-                  </td>
-                  <td className="price-col">$76.00</td>
-                  <td className="quantity-col">
-                    <div className="cart-product-quantity">
-                      <input type="number" className="form-control" defaultValue={1} min={1} max={10} step={1} data-decimals={0} required style={{display: 'none'}} /><div className="input-group  input-spinner"><div className="input-group-prepend"><button style={{minWidth: '26px'}} className="btn btn-decrement btn-spinner" type="button"><i className="icon-minus" /></button></div><input type="text" style={{textAlign: 'center'}} className="form-control " required placeholder /><div className="input-group-append"><button style={{minWidth: '26px'}} className="btn btn-increment btn-spinner" type="button"><i className="icon-plus" /></button></div></div>
-                    </div>{/* End .cart-product-quantity */}                                 
-                  </td>
-                  <td className="total-col">$76.00</td>
-                  <td className="remove-col"><button className="btn-remove"><i className="icon-close" /></button></td>
-                </tr>
-              </tbody>
+                    {
+                    cart.map((e,i)=>{
+                        let cartTotal = e.buy_qty*e.price;
+                        total+=cartTotal;
+                        
+                      return  (
+                        <tr key={i}>
+                            <td>{i+1}</td>
+                            <td><img src={e.thumbnail} width={50}/></td>
+                            <td>{e.title}</td>
+                            <td>{e.price}</td>
+                            <td>{e.buy_qty}</td>
+                            <td><Button variant="primary" onClick={()=>removeP(e)}>Remove</Button></td>
+                            <td>{cartTotal}</td>
+                        </tr>
+                      );       
+                    })
+                    }
+                </tbody>
             </table>{/* End .table table-wishlist */}
             <div className="cart-bottom">
               <div className="cart-discount">

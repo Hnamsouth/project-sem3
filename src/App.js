@@ -10,6 +10,7 @@ import HomeU from './Pages/User/home';
 import NotFound from './Pages/NotFound';
 import CartU from './Pages/User/cart';
 import CheckoutU from './Pages/User/checkout';
+import ProductPage from './Pages/User/productPage';
 const URL_USER="/user-lord"
 
 
@@ -26,7 +27,7 @@ function App() {
                   <Route exact path='/' element={iUser(<HomeU/>,false) } />
                   <Route  path='/contact' element={iUser(<HomeU/>,false)}/>
                   <Route  path='/about-us' element={iUser(<HomeU/>,false)}/>
-                  <Route  path='/product' element={iUser(<HomeU/>,false)}/>
+                  <Route  path='/product' element={iUser(<ProductPage/>,false)}/>
                   <Route path='/cart' element={iUser(<CartU/>,false)}/>
                   <Route path='/checkout' element={iUser(<CheckoutU/>,false)}/>
                   {/* User Route */}
