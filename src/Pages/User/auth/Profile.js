@@ -5,19 +5,18 @@ import jwt_decode from "jwt-decode";
 import { getProfile } from "../../../Service/auth.service";
 const Uprofile = (props)=>{
     const {state,dispatch}=useContext(UserContext);
-
     const [user,setUser]=useState({Id:"",Email:""});
-    const [asd,setAsd]=useState([]);
 
 
     const getP = async ()=>{
-        dispatch({type:"SHOW_LOADING"})
         var u = await  getProfile();
         setUser(u);
+        let token = localStorage.getItem("token")
         dispatch({type:"HIDE_LOADING"})
     }
 
     useEffect( ()=>{
+        dispatch({type:"SHOW_LOADING"})
         getP();
     },[])
 

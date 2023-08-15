@@ -1,4 +1,26 @@
+import React, { useContext, useState } from 'react';
+import UserContext from '../../context/userContext';
+import AuthModal from '../../Pages/User/auth/AuthModal';
+import { Link } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import api from '../../Service/api';
+import { useNavigate  } from 'react-router-dom';
+
 const HEADER = ()=>{
+    const {state,dispatch}=useContext(UserContext);
+    const navigate = useNavigate();
+    const check = state.token && state.token !="";
+    const u = check? jwtDecode(state.token):{};
+    const showModal = ()=> {
+        dispatch({type:"SHOW_AUTH_MODAL"});
+    }
+    const LogOut = ()=>{
+        state.token="";
+        api.defaults.headers.common["Authorization"]="";
+        localStorage.removeItem("token");
+        navigate("/");
+    }
+
     return (
         <header class="header">
                         <div class="header-top">
@@ -18,8 +40,7 @@ const HEADER = ()=>{
                                         <div class="header-menu">
                                             <ul>
                                                 <li><a href="#">English</a></li>
-                                                <li><a href="#">French</a></li>
-                                                <li><a href="#">Spanish</a></li>
+                                                <li><a href="#">Viet Nam</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -33,10 +54,22 @@ const HEADER = ()=>{
                                                 <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
                                                 <li><a href="about.html">About Us</a></li>
                                                 <li><a href="contact.html">Contact Us</a></li>
-                                                <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                                                {!check?(<li>
+                                                        <a type='button' onClick={showModal}><i class="icon-user"></i>Login</a>
+                                                        <AuthModal/>
+                                                    </li>):""}
                                             </ul>
                                         </li>
                                     </ul>
+                                    {check?( <div class="header-dropdown">
+                                        <a >{u.email??""}</a>
+                                        <div class="header-menu">
+                                            <ul>
+                                                <li><Link to={"/u-profile"}>Profile</Link></li>
+                                                <li><a href="#" onClick={LogOut}>LogOut</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>):""}
                                 </div>
                             </div>
                         </div>
@@ -48,11 +81,9 @@ const HEADER = ()=>{
                                         <span class="sr-only">Toggle mobile menu</span>
                                         <i class="icon-bars"></i>
                                     </button>
-
-                                    <a href="https://www.portotheme.com/html/molla/index1.html" class="logo">
+                                    <Link to={"/"} className='logo'>
                                         <img src="../user/assets/images/demos/demo-21/logo.png" alt="Molla Logo" width="100" height="25"/>
-                                    </a>
-
+                                    </Link>
                                     <nav class="main-nav">
                                         <ul class="menu sf-arrows">
                                             <li class="megamenu-container active">
