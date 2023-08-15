@@ -37,6 +37,7 @@ const Register= () =>{
     })
     const RegisterSubmmit = async (data,withGG)=>{
         dispatch({type:"SHOW_LOADING"})
+
         let rs = await Uregister(data);
         if(rs){
             dispatch({type:"HIDE_AUTH_MODAL"});
@@ -49,8 +50,7 @@ const Register= () =>{
     }
         // dispatch({type:"HIDE_LOADING"})
     const RegisterSubmmitGG = async (data)=>{
-        let check=false;
-        await CheckEmail(data.email).then(e=>check=e);
+        let check= await CheckEmail(data.email);
         console.log(check)
     }
     function CheckForm(){
