@@ -23,7 +23,7 @@ const Cart = () => {
 
     const deleteProductInCart = async(id)=>{
         const d = await deleteCart(id);
-        const c = await getProductInCart(1);
+        const c = await getProductInCart();
         setCart(c);  
     }
 
