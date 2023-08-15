@@ -10,6 +10,7 @@ import HomeU from './Pages/User/home';
 import NotFound from './Pages/NotFound';
 import Login from './Pages/User/auth/login';
 import Uprofile from './Pages/User/auth/Profile';
+import Cart from './Pages/Cart/cart';
 const URL_USER="/user-lord"
 
 
@@ -34,6 +35,7 @@ function App() {
                   {/* User Route */}
                   <Route path={URL_USER+"/asd"} element={UserLO(<HomeU/>)}/>
                   <Route path='*' Component={NotFound}/>
+                  <Route  path='/cart' element={UserLO(<Cart/>)}/>
                 </Routes>
             </BrowserRouter>
           </UserProvider>

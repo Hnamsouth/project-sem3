@@ -315,7 +315,7 @@ const HEADER = ()=>{
                                             </div>
 
                                             <div class="dropdown-cart-action">
-                                                <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                                <a href="/cart" class="btn btn-primary">View Cart</a>
                                                 <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                             </div>
                                         </div>

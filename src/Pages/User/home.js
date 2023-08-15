@@ -1,4 +1,19 @@
+import { getProduct } from "../../Service/product.service";
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { Card,Figure,Image, Row } from "react-bootstrap"
+
+
 const HomeU=()=>{
+    const [product,setProduct]=useState([])
+    const getAllProduct = async ()=>{
+        const p = await getProduct();
+        setProduct(p);
+    }
+    useEffect(()=>{
+        getAllProduct();
+     },[]);
+    
     return (
         <main class="main">
                         <div class="intro-slider-container mb-5">
@@ -601,354 +616,50 @@ const HomeU=()=>{
 
                             <div class="tab-content tab-content-carousel">
                                 <div class="tab-pane p-0 fade show active" id="arrivals-all-tab" role="tabpanel" aria-labelledby="arrivals-all-link">
-                                    <div class="row">
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-1.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
+                                    <Row class="row">
+                                        {product.map(p=>{
+                                            return(
+                                                <Card class="col-xl-5col col-lg-3 col-md-4 col-6">
+                                                    <Card.Body class="product demo21">
+                                                        <Figure class="product-media">
+                                                            <Card.Link href="product.html">
+                                                                <Image src="../user/assets/images/demos/demo-21/newArrivals/product-1.jpg" alt="Product image" class="product-image"/>
+                                                            </Card.Link>
+                                                        </Figure>
+                                                        
 
-                                                </figure>
+                                                        <Card.Body class="product-body text-center">
+                                                            <Card.Body class="product-cat">
+                                                                <Card.Link href="#">Shoes</Card.Link>
+                                                            </Card.Body>
+                                                            <h3 class="product-title"><Card.Link href="product.html">{p.name}</Card.Link></h3>
+                                                            <Card.Body class="product-price">
+                                                                <span class="cur-price">{p.price}</span>
+                                                            </Card.Body>
+                                                            <Card.Body class="ratings-container">
+                                                                <Card.Body class="ratings">
+                                                                    <Card.Body class="ratings-val" style={{width: 60+"%"}}></Card.Body>
+                                                                </Card.Body>
+                                                                <span class="ratings-text">( 2 Reviews )</span>
+                                                            </Card.Body>
 
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Shoes</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">UA Spawn Low</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="cur-price">$77.99</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 60+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
+                                                            <Card.Body class="product-nav product-nav-dots">
+                                                                <Card.Link href="#" class="active" style={{background: "#34529d"}}><span class="sr-only">Color name</span></Card.Link>
+                                                                <Card.Link href="#" style={{background:"#333333"}}><span class="sr-only">Color name</span></Card.Link>
+                                                            </Card.Body>
 
-                                                    <div class="product-nav product-nav-dots">
-                                                        <a href="#" class="active" style={{background: "#34529d"}}><span class="sr-only">Color name</span></a>
-                                                        <a href="#" style={{background:"#333333"}}><span class="sr-only">Color name</span></a>
-                                                    </div>
+                                                            <Card.Body class="product-action">
+                                                                <Card.Link href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></Card.Link>
+                                                            </Card.Body>
 
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
+                                                            <Card.Link href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></Card.Link>
 
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <span class="product-label label-sale">Sale</span>
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-2.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Jackets & Vests</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">The North Face Fanorak 2.0</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="new-price">$76.99</span>
-                                                        <span class="old-price">Was $109.99</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 80+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <span class="product-label label-sale">Sale</span>
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-3.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Bags</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">Osprey Talia</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="new-price">$67.50</span>
-                                                        <span class="old-price">Was $150.00</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 80+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-4.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Shoes</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">Ignite Limitless Leather</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="cur-price">$52.66</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 100+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-5.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Accessories</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">Small Sleeping Bag</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="cur-price">$299.99</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 80+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-6.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Tops</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">Alphaskin Sport Bra</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="cur-price">$34.99</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 60+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-nav product-nav-dots">
-                                                        <a href="#" class="active" style={{background: "#d64042"}}><span class="sr-only">Color name</span></a>
-                                                        <a href="#" style={{background: "#333333"}}><span class="sr-only">Color name</span></a>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-7.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Jackets & Vests</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">Watertight Jacket</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="cur-price">$76.99</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 80+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <span class="product-label label-sale">Sale</span>
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-8.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Shoes</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">Y-3 by Yohji Yamamoto</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="new-price">$239.99</span>
-                                                        <span class="old-price">Was $400.00</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 100+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-9.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Bags</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">Marmot Empire Daypack</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="cur-price">$59.99</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 80+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-5col col-lg-3 col-md-4 col-6">
-                                            <div class="product demo21">
-                                                <figure class="product-media">
-                                                    <a href="product.html">
-                                                        <img src="../user/assets/images/demos/demo-21/newArrivals/product-10.jpg" alt="Product image" class="product-image"/>
-                                                    </a>
-
-                                                </figure>
-
-                                                <div class="product-body text-center">
-                                                    <div class="product-cat">
-                                                        <a href="#">Shoes</a>
-                                                    </div>
-                                                    <h3 class="product-title"><a href="product.html">On Cloudflyer</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="cur-price">$127.99</span>
-                                                    </div>
-                                                    <div class="ratings-container">
-                                                        <div class="ratings">
-                                                            <div class="ratings-val" style={{width: 100+"%"}}></div>
-                                                        </div>
-                                                        <span class="ratings-text">( 2 Reviews )</span>
-                                                    </div>
-
-                                                    <div class="product-action">
-                                                        <a href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></a>
-                                                    </div>
-
-                                                    <a href="#" class="btn-addtolist"><span>&nbsp;Add to Wishlist</span></a>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                        </Card.Body>
+                                                    </Card.Body>
+                                                </Card> 
+                                            )
+                                        })}
+                                    </Row>
                                 </div>
                                 <div class="tab-pane p-0 fade" id="arrivals-women-tab" role="tabpanel" aria-labelledby="arrivals-women-link">
                                     <div class="row">
@@ -1464,7 +1175,7 @@ const HomeU=()=>{
                             </div>
                         </div>
 
-                    </main>
+        </main>
     );
 }
 export default HomeU;
