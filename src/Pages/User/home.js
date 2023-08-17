@@ -617,7 +617,7 @@ const HomeU=()=>{
                             <div class="tab-content tab-content-carousel">
                                 <div class="tab-pane p-0 fade show active" id="arrivals-all-tab" role="tabpanel" aria-labelledby="arrivals-all-link">
                                     <Row class="row">
-                                        {product.map(p=>{
+                                        {product.length>0 && product.map(p=>{
                                             return(
                                                 <Card class="col-xl-5col col-lg-3 col-md-4 col-6">
                                                     <Card.Body class="product demo21">

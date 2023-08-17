@@ -33,12 +33,13 @@ const router = createBrowserRouter([
   prepareRouter("/u-profile",<Uprofile/>,true),
   // prepareRouter("/verify-email",<VerifyEmail/>,true),
   // prepareRouter("/upload",<UploadWiget/>,false),
-  prepareRouter("/cart",<Cart/>,false),
+  prepareRouter("/cart",<Cart/>,true),
   prepareRouter("*",<NotFound/>,false),
 ]);
 
 
 function App() {
+  console.log(new Date().toLocaleString())
   const [state,dispatch]=useReducer(reducer,STATE);
     if(state.token){api.defaults.headers.common["Authorization"]=`Bearer ${state.token}`}
   return (
