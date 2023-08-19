@@ -7,7 +7,8 @@ const STATE={
     afterScript:[],
     userStyle:null,
     AuthModal:false,
-    AuthForm:true
+    AuthForm:true,
+    UserProfile:null
 }
 
 export default STATE;

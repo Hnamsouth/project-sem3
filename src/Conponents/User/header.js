@@ -9,13 +9,14 @@ import { useNavigate  } from 'react-router-dom';
 const HEADER = ()=>{
     const {state,dispatch}=useContext(UserContext);
     const navigate = useNavigate();
-    const check = state.token && state.token !="";
-    const u = check? jwtDecode(state.token):{};
     const showModal = ()=> {
         dispatch({type:"SHOW_AUTH_MODAL"});
     }
+
+    console.log(state.UserProfile)
     const LogOut = ()=>{
         state.token="";
+        state.UserProfile=null;
         api.defaults.headers.common["Authorization"]="";
         localStorage.removeItem("token");
         navigate("/");
@@ -54,15 +55,15 @@ const HEADER = ()=>{
                                                 <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
                                                 <li><a href="about.html">About Us</a></li>
                                                 <li><a href="contact.html">Contact Us</a></li>
-                                                {!check?(<li>
+                                                {state.UserProfile==null ? (<li>
                                                         <a type='button' onClick={showModal}><i class="icon-user"></i>Login</a>
                                                         <AuthModal/>
                                                     </li>):""}
                                             </ul>
                                         </li>
                                     </ul>
-                                    {check?( <div class="header-dropdown">
-                                        <a >{u.email??""}</a>
+                                    {state.UserProfile!=null?( <div class="header-dropdown">
+                                        <a >{state.UserProfile.email??""}</a>
                                         <div class="header-menu">
                                             <ul>
                                                 <li><Link to={"/u-profile"}>Profile</Link></li>

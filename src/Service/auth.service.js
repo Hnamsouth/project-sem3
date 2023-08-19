@@ -50,6 +50,10 @@ export const CheckToken = async () =>{
     api.defaults.headers.common["Authorization"]=`Bearer ${token}`;
     try {
         let rs = await api.post(url);
+        if(!rs.data.checkToken){
+            localStorage.removeItem('token')
+            api.defaults.headers.common["Authorization"]="";
+        }
         return rs.data.checkToken
     } catch (error) {
         return false;
