@@ -2,10 +2,10 @@ import './App.css';
 import VerifyEmail from './Pages/User/auth/VerifyEmail';
 import RegisterLogin from './Pages/User/auth/RegisterLogin';
 import api from './Service/api';
-import { CheckToken } from './Service/auth.service';
+import { CheckToken, getProfile } from './Service/auth.service';
 import RouteProtected from './Pages/User/auth/Protected';
 import UploadWiget from './Pages/UploadWidget';
-import React,{ useReducer} from 'react';
+import React,{ useReducer,useEffect} from 'react';
 import { UserProvider } from './context/userContext';
 import reducer from './context/reducer';
 import STATE from '../src/context/initState';
@@ -45,12 +45,25 @@ const router = createBrowserRouter([
 
 function App() {
   const [state,dispatch]=useReducer(reducer,STATE);
+
+  const CheckAuth= async ()=>{
+    const rs= await CheckToken();
+    if(rs){
+      const up= await getProfile();
+      console.log(up)
+      state.UserProfile=up;
+    }
+  }
+
+  useEffect(()=>{
+    CheckAuth();
+  })
     if(state.token){api.defaults.headers.common["Authorization"]=`Bearer ${state.token}`}
   return (
           <UserProvider value={{state,dispatch}}>
             <Loading display={state.loading}/>
             {/* <UserLinkCss/> */}
-          <RouterProvider router={router}/>
+            <RouterProvider router={router}/>
           </UserProvider>
   );
 }

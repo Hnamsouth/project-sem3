@@ -41,6 +41,7 @@ const Register= () =>{
             if(e){navigate("/login")}
             else{alert("Register failed")}
         })
+        dispatch({type:"HIDE_AUTH_MODAL"})
         dispatch({type:"HIDE_LOADING"})
     }
     const RegisterSubmmitGG = async (data)=>{
