@@ -8,7 +8,7 @@ function Loading (props){
         left:0,
         backgroundColor:"rgb(255 255 255)",
         opacity:0.7,
-        zIndex:100,
+        zIndex:1100,
         backgroundRepeat:"no-repeat",
         backgroundPosition:"center",
         backgroundImage:"url(sample.gif)",

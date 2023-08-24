@@ -45,6 +45,11 @@ const Register= () =>{
         }else{
             alert("faild")
         }
+        await Uregister(data).then(e=>{
+            if(e){navigate("/login")}
+            else{alert("Register failed")}
+        })
+        dispatch({type:"HIDE_AUTH_MODAL"})
         dispatch({type:"HIDE_LOADING"})
             
     }

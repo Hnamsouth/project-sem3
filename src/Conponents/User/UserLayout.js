@@ -4,7 +4,6 @@ import React,{useEffect} from "react";
 
 const UserLayout =  (props)=>{
     return (
-        <html>
             <body>
                 <div class="page-wrapper">
                     <HEADER/>
@@ -212,7 +211,6 @@ const UserLayout =  (props)=>{
                     </div>
                 </div>
             </body>
-        </html>
     );
 }
 export default UserLayout;

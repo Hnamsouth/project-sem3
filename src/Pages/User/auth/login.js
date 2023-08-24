@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import api from '../../../Service/api';
-import { ULogin } from '../../../Service/auth.service';
+import { ULogin, getProfile } from '../../../Service/auth.service';
 import UserContext from '../../../context/userContext';
 import { useNavigate  } from 'react-router-dom';
 
@@ -34,6 +34,9 @@ const Login =()=>{
         dispatch({type:"ADD_TOKEN",payload:rs.token})
         api.defaults.headers.common["Authorization"]=`Bearer ${rs.token}`
         localStorage.setItem("token",rs.token)
+
+        state.UserProfile = await getProfile();
+        console.log(state.UserProfile)
         setTimeout(()=>{
             dispatch({type:"HIDE_LOADING"});
         },1000);
