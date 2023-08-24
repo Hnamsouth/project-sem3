@@ -37,7 +37,7 @@ const router = createBrowserRouter([
   // prepareRouter("/upload",<UploadWiget/>,false),
   prepareRouter("/cart",<Cart/>,true),
   prepareRouter("/favorite",<Favorite/>,true),
-  prepareRouter("/checkout",<Checkout/>,fale),
+  prepareRouter("/checkout",<Checkout/>,false),
 
   prepareRouter("*",<NotFound/>,false),
 ]);
