@@ -1,5 +1,11 @@
 import './App.css';
-import React,{ useReducer} from 'react';
+import VerifyEmail from './Pages/User/auth/VerifyEmail';
+import RegisterLogin from './Pages/User/auth/RegisterLogin';
+import api from './Service/api';
+import { CheckToken, getProfile } from './Service/auth.service';
+import RouteProtected from './Pages/User/auth/Protected';
+import UploadWiget from './Pages/UploadWidget';
+import React,{ useReducer,useEffect} from 'react';
 import { UserProvider } from './context/userContext';
 import reducer from './context/reducer';
 import STATE from '../src/context/initState';
@@ -9,12 +15,10 @@ import UserLayout from './Conponents/User/UserLayout';
 import HomeU from './Pages/User/home';
 import NotFound from './Pages/NotFound';
 import Uprofile from './Pages/User/auth/Profile';
-import VerifyEmail from './Pages/User/auth/VerifyEmail';
-import RegisterLogin from './Pages/User/auth/RegisterLogin';
-import api from './Service/api';
-import { CheckToken } from './Service/auth.service';
-import RouteProtected from './Pages/User/auth/Protected';
-import UploadWiget from './Pages/UploadWidget';
+import Cart from './Pages/Cart/cart';
+const URL_USER="/user-lord"
+
+
 const prepareRouter = (path,element,auth,child)=>{
   return {
     path:path,
@@ -27,22 +31,36 @@ const router = createBrowserRouter([
   prepareRouter("/",<HomeU/>,false),
   prepareRouter("/login",<RegisterLogin/>,false),
   prepareRouter("/u-profile",<Uprofile/>,true),
-  prepareRouter("/verify-email",<VerifyEmail/>,true),
-  prepareRouter("/upload",<UploadWiget/>,false),
-
+  // prepareRouter("/verify-email",<VerifyEmail/>,true),
+  // prepareRouter("/upload",<UploadWiget/>,false),
+  prepareRouter("/cart",<Cart/>,true),
   prepareRouter("*",<NotFound/>,false),
 ]);
 
 
 function App() {
   const [state,dispatch]=useReducer(reducer,STATE);
+
+  const CheckAuth= async ()=>{
+    const rs= await CheckToken();
+    if(rs){
+      const up= await getProfile();
+      console.log(up)
+      state.UserProfile=up;
+    }
+  }
+
+  useEffect(()=>{
+    CheckAuth();
+  })
     if(state.token){api.defaults.headers.common["Authorization"]=`Bearer ${state.token}`}
   return (
           <UserProvider value={{state,dispatch}}>
             <Loading display={state.loading}/>
-            {/* use route */}
+            {/* <UserLinkCss/> */}
             <RouterProvider router={router}/>
           </UserProvider>
   );
 }
+
 export default App;
