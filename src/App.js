@@ -16,6 +16,8 @@ import HomeU from './Pages/User/home';
 import NotFound from './Pages/NotFound';
 import Uprofile from './Pages/User/auth/Profile';
 import Cart from './Pages/Cart/cart';
+import Favorite from './Pages/Favorite/favorite';
+import Checkout from './Pages/Checkout/checkout';
 const URL_USER="/user-lord"
 
 
@@ -33,7 +35,10 @@ const router = createBrowserRouter([
   prepareRouter("/u-profile",<Uprofile/>,true),
   // prepareRouter("/verify-email",<VerifyEmail/>,true),
   // prepareRouter("/upload",<UploadWiget/>,false),
-  prepareRouter("/cart",<Cart/>,false),
+  prepareRouter("/cart",<Cart/>,true),
+  prepareRouter("/favorite",<Favorite/>,true),
+  prepareRouter("/checkout",<Checkout/>,fale),
+
   prepareRouter("*",<NotFound/>,false),
 ]);
 
