@@ -1,13 +1,18 @@
 import { getProduct } from "../../Service/product.service";
 import { useState, useContext } from 'react';
 import { useEffect } from 'react';
-import { Card, Figure, Image, Row } from "react-bootstrap"
+import { Card, Figure, Image, NavLink, Row } from "react-bootstrap"
 import { addProductInFavorite, deleteFavorite } from "../../Service/favorite.service";
 import { FavouriteContext } from '../../Conponents/User/UserLayout';
 import {getAllProductInFavorite} from '../../Conponents/getAllProduct';
+import UserContext from "../../context/userContext";
+import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
+
 
 
 const HomeU = () => {
+    const {state,dispatch}=useContext(UserContext);
     const [product, setProduct] = useState([]);
     const [favorite, setFavorite] = useContext(FavouriteContext);
 
@@ -22,20 +27,20 @@ const HomeU = () => {
     }, []);
 
     const addProductFavorite = async (productId) => {
-       // if (favorite.length === 0) {
-            const add = await addProductInFavorite(productId)
+        if (favorite.length === 0) {
+            const add = await addProductInFavorite(productId);
             setFavorite(add)
 
-       // } else {
-        //     const findProduct = favorite.find(p => p.product.id === productId)
-        //     if (findProduct) {
-        //         await deleteFavorite(findProduct);
-        //         getAllProductInFavorite(setFavorite);
-        //     } else {
-        //         const add = await addProductInFavorite(productId)
-        //         setFavorite(add);
-        //     }
-        // }
+       } else {
+            const findProduct = favorite.find(p => p.product.id === productId)
+            if (findProduct) {
+                await deleteFavorite(findProduct.id);
+                getAllProductInFavorite(setFavorite);
+            } else {
+                const add = await addProductInFavorite(productId)
+                setFavorite(add);
+            }
+        }
     }
     return (
         <main class="main">
@@ -649,7 +654,7 @@ const HomeU = () => {
 
                                             <Card.Body class="product-body text-center">
                                                 <Card.Body class="product-cat">
-                                                    <Card.Link href="#">Shoes</Card.Link>
+                                                    <Link to="#">Shoes</Link>
                                                 </Card.Body>
                                                 <h3 class="product-title"><Card.Link href="product.html">{p.name}</Card.Link></h3>
                                                 <Card.Body class="product-price">
@@ -663,15 +668,15 @@ const HomeU = () => {
                                                 </Card.Body>
 
                                                 <Card.Body class="product-nav product-nav-dots">
-                                                    <Card.Link href="#" class="active" style={{ background: "#34529d" }}><span class="sr-only">Color name</span></Card.Link>
-                                                    <Card.Link href="#" style={{ background: "#333333" }}><span class="sr-only">Color name</span></Card.Link>
+                                                    <Link to="#" class="active" style={{ background: "#34529d" }}><span class="sr-only">Color name</span></Link>
+                                                    <Link href="#" style={{ background: "#333333" }}><span class="sr-only">Color name</span></Link>
                                                 </Card.Body>
 
                                                 <Card.Body class="product-action">
-                                                    <Card.Link href="#" class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></Card.Link>
+                                                    <Link to={"/product/" + p.id} class="btn-product btn-cart" title="Add to cart"><span>ADD TO CART</span></Link>
                                                 </Card.Body>
 
-                                                <Card.Link href="#" class="btn-addtolist" onClick={() => addProductFavorite(p.id)}><span>&nbsp;Add to Wishlist</span></Card.Link>
+                                                <button class="btn-addtolist" onClick={() => addProductFavorite(p.id)}><span>&nbsp;Add to Wishlist</span></button>
 
                                             </Card.Body>
                                         </Card.Body>

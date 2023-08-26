@@ -22,8 +22,8 @@ export const deleteFavorite = async (id) => {
 }
 export const addProductInFavorite = async (id) => {
     try {
-        const url = URL;
-        const rs = await api.post(url, { productId: id });
+        const url = URL+("?productId="+id);
+        const rs = await api.post(url);
         return rs.data;
     } catch (error) {
         console.log(error);

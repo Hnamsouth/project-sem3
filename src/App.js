@@ -18,6 +18,7 @@ import Uprofile from './Pages/User/auth/Profile';
 import Cart from './Pages/Cart/cart';
 import Favorite from './Pages/Favorite/favorite';
 import Checkout from './Pages/Checkout/checkout';
+import Product from './Pages/Product/product_detail';
 const URL_USER="/user-lord"
 
 
@@ -38,6 +39,8 @@ const router = createBrowserRouter([
   prepareRouter("/cart",<Cart/>,true),
   prepareRouter("/favorite",<Favorite/>,true),
   prepareRouter("/checkout",<Checkout/>,false),
+  prepareRouter("/product/:id",<Product/>,false),
+
 
   prepareRouter("*",<NotFound/>,false),
 ]);

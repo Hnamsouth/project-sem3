@@ -14,7 +14,6 @@ export const getProductInCart = async ()=>{
     try {
         const url =`${URL}`;
         const rs = await api.get(url);
-        console.log(rs);
         return rs.data;
     } catch (error) {
         return error;

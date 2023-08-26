@@ -1,10 +1,10 @@
 import api from "./api";
-const URL = "product";
+const URL = "product-color";
 
-export const getProduct = async (id)=>{
+export const getProductInColor = async (id)=>{
 
     try {
-        const url =id==null?URL:URL+`?id=${id}`;
+        const url =id==null ? URL: URL+`?id=${id}`;
         const rs = await api.get(url);
         return rs.data;
     } catch (error) {

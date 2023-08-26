@@ -22,7 +22,6 @@ const HEADER = ({favorite,cart}) => {
         localStorage.removeItem("token");
         navigate("/");
     }
-
     return (
         <header class="header">
             <div class="header-top">
@@ -286,10 +285,10 @@ const HEADER = ({favorite,cart}) => {
                             </form>
                         </div>
                         <div class="wishlist">
-                            <a href="/favorite" title="Wishlist">
+                            <Link to={"/favorite"}>
                                 <i class="icon-heart-o"></i>
-                                <span class="wishlist-count" style={{ marginBottom: 22, marginLeft: 44, position: "absolute" }}>{favorite.length > 0 ? favorite.length : 0}</span>
-                            </a>
+                                <span class="wishlist-count" style={{ marginBottom: 22, marginLeft: 44, position: "absolute" }}>{favorite.length>0?favorite.length:0}</span>
+                            </Link>
                         </div>
 
                         <div class="dropdown cart-dropdown">
