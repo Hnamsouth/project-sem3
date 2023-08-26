@@ -142,7 +142,7 @@ const Cart = () => {
                                                     <td>$3000.00</td>
                                                 </tr>
                                                 <tr class="summary-shipping-estimate">
-                                                    <td>Estimate for Your Country<br /><a href="dashboard.html">Change address</a></td>
+                                                    <td>Estimate for Your Country<br/><a href="dashboard.html">Change address</a></td>
                                                     <td>&nbsp;</td>
                                                 </tr>
 

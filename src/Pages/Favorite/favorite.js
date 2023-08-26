@@ -3,12 +3,13 @@ import { deleteFavorite } from "../../Service/favorite.service";
 import { useEffect } from "react";
 import { getAllProductInFavorite } from '../../Conponents/getAllProduct'
 import { FavouriteContext } from '../../Conponents/User/UserLayout';
+import UserContext from "../../context/userContext";
 const Favorite = () => {
+    const {state,dispatch}=useContext(UserContext);
     const [favorite, setFavorite] = useContext(FavouriteContext);
 
     useEffect(() => {
         getAllProductInFavorite(setFavorite);
-
     }, []);
 
     const deleteProductInFavorite = async (id) => {
