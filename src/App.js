@@ -39,9 +39,9 @@ const router = createBrowserRouter([
 
 
 function App() {
-  const [state,dispatch]=useReducer(reducer,STATE);
-
+  const [state,dispatch]=useReducer(reducer,STATE);   
   const CheckAuth= async ()=>{
+
     const rs= await CheckToken();
     if(rs){
       const up= await getProfile();
