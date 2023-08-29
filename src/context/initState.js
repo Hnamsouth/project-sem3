@@ -8,7 +8,7 @@ const STATE={
     userStyle:null,
     AuthModal:false,
     AuthForm:true,
-    UserProfile:null
+    User:{profile:null,cart:[],favorite:[]}
 }
 
 export default STATE;

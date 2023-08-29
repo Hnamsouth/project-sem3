@@ -34,14 +34,14 @@ const Login =()=>{
         dispatch({type:"ADD_TOKEN",payload:rs.token})
         api.defaults.headers.common["Authorization"]=`Bearer ${rs.token}`
         localStorage.setItem("token",rs.token)
+        dispatch({type:"SET_USER",payload:await getProfile()})
 
-        state.UserProfile = await getProfile();
-        console.log(state.UserProfile)
         setTimeout(()=>{
             dispatch({type:"HIDE_LOADING"});
         },1000);
+        
         dispatch({type:"HIDE_AUTH_MODAL"});
-        navigate("/u-profile");
+        navigate("/");
     }
     return (
             <div class={state.AuthForm?"tab-pane fade show active":"tab-pane fade"} id="signin" role="tabpanel" aria-labelledby="signin-tab">

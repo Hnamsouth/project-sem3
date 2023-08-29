@@ -47,6 +47,7 @@ export const CheckEmail = async (email) =>{
 export const CheckToken = async () =>{
     const url = "auth/check-token";
     const token =localStorage.getItem("token");
+    if(token=="") return false;
     api.defaults.headers.common["Authorization"]=`Bearer ${token}`;
     try {
         let rs = await api.post(url);

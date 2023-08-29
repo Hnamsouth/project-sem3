@@ -16,10 +16,12 @@ const RegisterLogin = (props)=>{
     }
     return (
         <GoogleOAuthProvider clientId={ClientID} >
-            <div class="form-box">
-                <button type="button" class="close" onClick={closeModal} aria-label="Close">
-                    <span ><i class="icon-close"></i></span>
-                </button>
+        <div className='login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17' style={{backgroundImage: 'url("/user/assets/images/backgrounds/login-bg.jpg")'}}>
+            <div className='container'>
+                <div class="form-box">
+                    <button type="button" class="close" onClick={closeModal} aria-label="Close">
+                        <span ><i class="icon-close"></i></span>
+                    </button>
                         <div class="form-tab">
                             <ul class="nav nav-pills nav-fill" role="tablist">
                                 <li class="nav-item">
@@ -35,6 +37,9 @@ const RegisterLogin = (props)=>{
                             </div>
                         </div>
                     </div>
+            </div>
+        </div>
+            
         </GoogleOAuthProvider>
     );
 }

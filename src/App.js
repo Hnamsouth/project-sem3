@@ -1,46 +1,34 @@
 import './App.css';
-import VerifyEmail from './Pages/User/auth/VerifyEmail';
-import RegisterLogin from './Pages/User/auth/RegisterLogin';
-import api from './Service/api';
-import { CheckToken, getProfile } from './Service/auth.service';
-import RouteProtected from './Pages/User/auth/Protected';
-import UploadWiget from './Pages/UploadWidget';
 import React,{ useReducer,useEffect} from 'react';
 import { UserProvider } from './context/userContext';
 import reducer from './context/reducer';
 import STATE from '../src/context/initState';
-import Loading from './Conponents/loading';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom';
-import UserLayout from './Conponents/User/UserLayout';
+import { prepareRouter } from './route/web.route';
+import api from './Service/api';
+import { CheckToken, getProfile } from './Service/auth.service';
+
 import HomeU from './Pages/User/home';
 import NotFound from './Pages/NotFound';
 import Uprofile from './Pages/User/auth/Profile';
 import Cart from './Pages/Cart/cart';
 import Favorite from './Pages/Favorite/favorite';
 import Checkout from './Pages/Checkout/checkout';
-import Product from './Pages/Product/product_detail';
-const URL_USER="/user-lord"
+import RegisterLogin from './Pages/User/auth/RegisterLogin';
+import Loading from './Conponents/loading';
+import ProductDetail from './Pages/Product/pDetail';
+import UserCarts from './Pages/Cart/UserCarts';
 
 
-const prepareRouter = (path,element,auth,child)=>{
-  return {
-    path:path,
-    element:auth?<RouteProtected child={<UserLayout main={element}/>}/>:<UserLayout main={element}/>,
-    loader:auth? async ({})=>{return await CheckToken();}:null,
-  };
-}
 //  declare route
 const router = createBrowserRouter([
   prepareRouter("/",<HomeU/>,false),
   prepareRouter("/login",<RegisterLogin/>,false),
   prepareRouter("/u-profile",<Uprofile/>,true),
-  // prepareRouter("/verify-email",<VerifyEmail/>,true),
-  // prepareRouter("/upload",<UploadWiget/>,false),
-  prepareRouter("/cart",<Cart/>,true),
+  prepareRouter("/cart",<UserCarts/>,true),
   prepareRouter("/favorite",<Favorite/>,true),
   prepareRouter("/checkout",<Checkout/>,false),
-  prepareRouter("/product/:id",<Product/>,false),
-
+  prepareRouter("/product/:id",<ProductDetail/>,false),
 
   prepareRouter("*",<NotFound/>,false),
 ]);
@@ -49,18 +37,21 @@ const router = createBrowserRouter([
 function App() {
   const [state,dispatch]=useReducer(reducer,STATE);   
   const CheckAuth= async ()=>{
-
     const rs= await CheckToken();
+    console.log(rs)
+
     if(rs){
-      const up= await getProfile();
-      console.log(up)
-      state.UserProfile=up;
+      if(state.User.profile==null){
+        const up= await getProfile();
+        dispatch({type:"SET_USER",payload:{profile:up.profile,cart:up.cart,favorite:up.favorite}})
+      }
+    }else{
+      dispatch({type:"SET_USER",payload:{profile:null,cart:[],favorite:[]}})
     }
   }
-
   useEffect(()=>{
     CheckAuth();
-  })
+  },[])
     if(state.token){api.defaults.headers.common["Authorization"]=`Bearer ${state.token}`}
   return (
           <UserProvider value={{state,dispatch}}>

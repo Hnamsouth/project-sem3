@@ -1,30 +1,17 @@
 import FOOTER from "./footer";
 import HEADER from "./header";
-import React,{useEffect, createContext, useState} from "react";
-import { getAllProductInCart, getAllProductInFavorite } from '../getAllProduct';
+import React,{useEffect, useState} from "react";
 
-export const FavouriteContext = createContext();
-export const CartContext = createContext();
 
 
 const UserLayout =  (props)=>{
-    const [favorite, setFavorite] = useState([]);
-    const [cart, setCart] = useState([]);
-
-
-    
-    useEffect(() => {
-        getAllProductInFavorite(setFavorite);
-        getAllProductInCart(setCart)
-    }, []);
     return (
-        <FavouriteContext.Provider value={[favorite, setFavorite]}>
-            <CartContext.Provider value = {[cart,setCart]}>
-                <html>
-                    <body>
-                        <div class="page-wrapper">
-                            <HEADER favorite={favorite} cart={cart}/>
-                            {props.main}
+            <>
+            <div class="page-wrapper">
+                            <HEADER/>
+                            <main className="main">
+                                {props.main}
+                            </main>
                             <FOOTER/>
                             <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
                             <div class="mobile-menu-overlay"></div>
@@ -227,10 +214,8 @@ const UserLayout =  (props)=>{
                                 </div>
                             </div>
                         </div>
-                    </body>
-                </html>
-           </CartContext.Provider>
-        </FavouriteContext.Provider>
+            </>
+
     );
 }
 export default UserLayout;

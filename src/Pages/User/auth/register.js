@@ -7,8 +7,9 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import UserContext from '../../../context/userContext';
-import { CheckEmail, Uregister } from '../../../Service/auth.service';
+import { CheckEmail, Uregister, getProfile } from '../../../Service/auth.service';
 import { useNavigate  } from 'react-router-dom';
+import api from '../../../Service/api';
 
 const ERR={
     PASSWORD:"Password must contain 1 uppercase letter, 1 lowercase letter and 1 number",
@@ -35,29 +36,39 @@ const Register= () =>{
     const {register,handleSubmit,formState:{errors}}=useForm({
         resolver:yupResolver(schema),
     })
-    const RegisterSubmmit = async (data,withGG)=>{
+    const RegisterSubmmit = async (data)=>{
         dispatch({type:"SHOW_LOADING"})
-
-        let rs = await Uregister(data);
+        let rs = await Uregister(data,false);
         if(rs){
             dispatch({type:"HIDE_AUTH_MODAL"});
             navigate("/login");
         }else{
             alert("faild")
         }
-        await Uregister(data).then(e=>{
-            if(e){navigate("/login")}
-            else{alert("Register failed")}
-        })
         dispatch({type:"HIDE_AUTH_MODAL"})
         dispatch({type:"HIDE_LOADING"})
             
     }
-        // dispatch({type:"HIDE_LOADING"})
     const RegisterSubmmitGG = async (data)=>{
+        dispatch({type:"SHOW_LOADING"})
         let check= await CheckEmail(data.email);
-        console.log(check)
+        if(check) return alert("Account existed");
+        let rs = await Uregister(data,true);
+        if(!rs.token) {
+            dispatch({type:"HIDE_LOADING"});
+            alert("Register Faild");
+            return ;
+        }
+        dispatch({type:"ADD_TOKEN",payload:rs.token})
+        api.defaults.headers.common["Authorization"]=`Bearer ${rs.token}`
+        localStorage.setItem("token",rs.token)
+        let up = await getProfile();
+        dispatch({type:"SET_USER",payload:{profile:up.profile,cart:up.cart,favorite:up.favorite}})
+        
+        dispatch({type:"HIDE_LOADING"});
+        navigate("/");
     }
+    
     function CheckForm(){
         console.log(state.AuthForm)
         dispatch({type:"SHOW_REGISTER"})

@@ -42,3 +42,14 @@ export const deleteCart = async (id)=>{
         return false;
     }
 }
+
+
+export const AddCart = async (data)=>{
+    try {
+        const url=`cart?productSizeId=${data.productSizeId}&buyQty=${data.buyQty}`;
+        const rs = await api.post(url);
+        return rs.data;
+    } catch (error) {
+        return false;
+    }
+}
