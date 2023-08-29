@@ -26,7 +26,10 @@ const reducer=(state,action)=>{// custom action: {type:...,payload:...}
         }
         case "ADD_TOKEN" :return {
             ...state,token:action.payload
-        }
+        };
+        // case "FAVORITE": return {
+        //     ...state,favourites:action.data
+        // }
         default: return state;
     }
 }

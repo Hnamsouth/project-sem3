@@ -3,28 +3,20 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Plus, Dash } from 'react-bootstrap-icons';
 import { useParams } from 'react-router-dom';
-import {deleteCart, getProductInCart, update} from '../../Service/cart.service'
+import {deleteCart, update} from '../../Service/cart.service'
 import { useEffect } from 'react';
-import { getProduct } from '../../Service/product.service';
-
+import { getAllProductInCart } from '../../Conponents/getAllProduct'
 
 const Cart = () => {
     const [cart,setCart] = useState([]);
 
-    // lấy userId
-    const findProductInCart = async ()=>{
-        const c = await getProductInCart();
-        setCart(c);
-    }
-
     useEffect(()=>{
-       findProductInCart();
+        getAllProductInCart(setCart);
     },[]);
 
     const deleteProductInCart = async(id)=>{
         const d = await deleteCart(id);
-        const c = await getProductInCart();
-        setCart(c);  
+        getAllProductInCart(setCart);
     }
 
     const updateCart = async(data)=>{
@@ -92,7 +84,7 @@ const Cart = () => {
                                                                     <div class="product">
                                                                         <figure class="product-media">
                                                                             <a href="#">
-                                                                                <img src="assets/images/products/table/product-1.jpg" alt="Product image" />
+                                                                                <img src={c.product.img} alt="Product image" />
                                                                             </a>
                                                                         </figure>
 
@@ -150,7 +142,7 @@ const Cart = () => {
                                                     <td>$3000.00</td>
                                                 </tr>
                                                 <tr class="summary-shipping-estimate">
-                                                    <td>Estimate for Your Country<br /><a href="dashboard.html">Change address</a></td>
+                                                    <td>Estimate for Your Country<br/><a href="dashboard.html">Change address</a></td>
                                                     <td>&nbsp;</td>
                                                 </tr>
 
@@ -161,7 +153,7 @@ const Cart = () => {
                                             </tbody>
                                         </table>
 
-                                        <a href="checkout.html" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+                                        <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
                                     </div>
 
                                     <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>

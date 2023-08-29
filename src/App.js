@@ -16,6 +16,9 @@ import HomeU from './Pages/User/home';
 import NotFound from './Pages/NotFound';
 import Uprofile from './Pages/User/auth/Profile';
 import Cart from './Pages/Cart/cart';
+import Favorite from './Pages/Favorite/favorite';
+import Checkout from './Pages/Checkout/checkout';
+import Product from './Pages/Product/product_detail';
 const URL_USER="/user-lord"
 
 
@@ -34,6 +37,11 @@ const router = createBrowserRouter([
   // prepareRouter("/verify-email",<VerifyEmail/>,true),
   // prepareRouter("/upload",<UploadWiget/>,false),
   prepareRouter("/cart",<Cart/>,true),
+  prepareRouter("/favorite",<Favorite/>,true),
+  prepareRouter("/checkout",<Checkout/>,false),
+  prepareRouter("/product/:id",<Product/>,false),
+
+
   prepareRouter("*",<NotFound/>,false),
 ]);
 
