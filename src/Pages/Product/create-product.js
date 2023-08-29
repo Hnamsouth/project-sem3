@@ -13,11 +13,10 @@ function CreateProduct(props) {
     const handleChange = (newFiles) => {
         console.log(newFiles)
         setFiles(prevFiles => [...prevFiles, ...newFiles])
-     }
-  
-     const handleFileRemove = (fileId) => {
+    }
+    const handleFileRemove = (fileId) => {
         setFiles(prevFiles => prevFiles.filter(prevFile => prevFile.id !== fileId))
-     }
+    }
     
     const schema = yup.object({
         Name:yup.string().required().min(4).max(100,'quá số lượng'),
