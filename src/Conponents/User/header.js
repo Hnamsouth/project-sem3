@@ -1,4 +1,34 @@
+import React, { useContext, useState ,useEffect} from 'react';
+import UserContext from '../../context/userContext';
+import AuthModal from '../../Pages/User/auth/AuthModal';
+import { Link } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import api from '../../Service/api';
+import { useNavigate  } from 'react-router-dom';
+import { getNavData } from '../../Service/app.service';
+
 const HEADER = ()=>{
+    const {state,dispatch}=useContext(UserContext);
+    const [Nav,setNav]=useState([]);
+    const navigate = useNavigate();
+    const showModal = ()=> {
+        dispatch({type:"SHOW_AUTH_MODAL"});
+    }
+    const LogOut = ()=>{
+        state.token="";
+        state.UserProfile=null;
+        api.defaults.headers.common["Authorization"]="";
+        localStorage.removeItem("token");
+        navigate("/");
+    }
+    const GetNav = async ()=>{
+        const rs = await getNavData();
+        setNav(rs);
+    } 
+    useEffect(()=>{
+        GetNav();
+    },[])
+    console.log(Nav);
     return (
         <header class="header">
                         <div class="header-top">
@@ -18,8 +48,7 @@ const HEADER = ()=>{
                                         <div class="header-menu">
                                             <ul>
                                                 <li><a href="#">English</a></li>
-                                                <li><a href="#">French</a></li>
-                                                <li><a href="#">Spanish</a></li>
+                                                <li><a href="#">Viet Nam</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -33,10 +62,22 @@ const HEADER = ()=>{
                                                 <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
                                                 <li><a href="about.html">About Us</a></li>
                                                 <li><a href="contact.html">Contact Us</a></li>
-                                                <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                                                {state.UserProfile==null ? (<li>
+                                                        <a type='button' onClick={showModal}><i class="icon-user"></i>Login</a>
+                                                        <AuthModal/>
+                                                    </li>):""}
                                             </ul>
                                         </li>
                                     </ul>
+                                    {state.UserProfile!=null?( <div class="header-dropdown">
+                                        <a >{state.UserProfile.email??""}</a>
+                                        <div class="header-menu">
+                                            <ul>
+                                                <li><Link to={"/u-profile"}>Profile</Link></li>
+                                                <li><a href="#" onClick={LogOut}>LogOut</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>):""}
                                 </div>
                             </div>
                         </div>
@@ -48,19 +89,46 @@ const HEADER = ()=>{
                                         <span class="sr-only">Toggle mobile menu</span>
                                         <i class="icon-bars"></i>
                                     </button>
-
-                                    <a href="https://www.portotheme.com/html/molla/index1.html" class="logo">
+                                    <Link to={"/"} className='logo'>
                                         <img src="../user/assets/images/demos/demo-21/logo.png" alt="Molla Logo" width="100" height="25"/>
-                                    </a>
-
+                                    </Link>
                                     <nav class="main-nav">
                                         <ul class="menu sf-arrows">
-                                            <li class="megamenu-container active">
-                                                <a href="index.html" class="sf-with-ul">Home</a>
+                                            { Nav.length>0 && Nav.map((e,i)=>{
+                                                return (
+                                                    <li class={i==0?"megamenu-container active":""}>
+                                                        <a href="index.html" class="sf-with-ul">{e.title}</a>
+                                                            {e.data.length>0 && (
+                                                                <ul>{
+                                                                    e.data.map(c=>{
+                                                                    return (
+                                                                            <li>
+                                                                                <a href="about.html" class="sf-with-ul">{c.name}</a>
+                                                                                    {c.data.length > 0 && (
+                                                                                        <ul>
+                                                                                            {c.data.map(d=>{
+                                                                                                return (
+                                                                                                    <li><a href="about.html">{d.name}</a></li>
+                                                                                                )
+                                                                                            })}
+                                                                                        </ul>
+                                                                                    )
+                                                                                    }
+                                                                            </li>
+                                                                        );
+                                                                    })
+                                                                }</ul>
+                                                            )}
+                                                        
+                                                    </li>
+                                                );
+                                            })}
+                                            {/*
+                                            <li class="megamenu-container ">
+                                                <a href="index.html" class="sf-with-ul">OUTLET</a>
                                             </li>
-                                            <li>
+                                             <li>
                                                 <a href="category.html" class="sf-with-ul">Shop</a>
-
                                                 <div class="megamenu megamenu-md">
                                                     <div class="row no-gutters">
                                                         <div class="col-md-8">
@@ -115,49 +183,12 @@ const HEADER = ()=>{
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </li>
-                                            <li>
-                                                <a href="product.html" class="sf-with-ul">Product</a>
-
-                                                <div class="megamenu megamenu-sm">
-                                                    <div class="row no-gutters">
-                                                        <div class="col-md-6">
-                                                            <div class="menu-col">
-                                                                <div class="menu-title">Product Details</div>
-                                                                <ul>
-                                                                    <li><a href="product.html">Default</a></li>
-                                                                    <li><a href="product-centered.html">Centered</a></li>
-                                                                    <li><a href="product-extended.html"><span>Extended Info<span class="tip tip-new">New</span></span></a></li>
-                                                                    <li><a href="product-gallery.html">Gallery</a></li>
-                                                                    <li><a href="product-sticky.html">Sticky Info</a></li>
-                                                                    <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
-                                                                    <li><a href="product-fullwidth.html">Full Width</a></li>
-                                                                    <li><a href="product-masonry.html">Masonry Sticky Info</a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="banner banner-overlay">
-                                                                <a href="category.html">
-                                                                    <img src="../user/assets/images/menu/banner-2.jpg" alt="Banner"/>
-
-                                                                    <div class="banner-content banner-content-bottom">
-                                                                        <div class="banner-title text-white">New Trends<br/><span><strong>spring 2019</strong></span></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                            </li> */}
                                             <li>
                                                 <a href="#" class="sf-with-ul">Pages</a>
-
                                                 <ul>
                                                     <li>
                                                         <a href="about.html" class="sf-with-ul">About</a>
-
                                                         <ul>
                                                             <li><a href="about.html">About 01</a></li>
                                                             <li><a href="about-2.html">About 02</a></li>
@@ -165,7 +196,6 @@ const HEADER = ()=>{
                                                     </li>
                                                     <li>
                                                         <a href="contact.html" class="sf-with-ul">Contact</a>
-
                                                         <ul>
                                                             <li><a href="contact.html">Contact 01</a></li>
                                                             <li><a href="contact-2.html">Contact 02</a></li>
@@ -315,7 +345,7 @@ const HEADER = ()=>{
                                             </div>
 
                                             <div class="dropdown-cart-action">
-                                                <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                                <a href="/cart" class="btn btn-primary">View Cart</a>
                                                 <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                             </div>
                                         </div>

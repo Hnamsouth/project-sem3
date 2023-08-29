@@ -1,21 +1,13 @@
 import api from "./api";
+const URL = "product";
 
-export const getProduct = async (limit)=>{
-    const url = `products?limit=${limit}`;
-    try{
-        const rs = await api.get(url);
-        return rs.data.products;
-    }catch(error){
-        return[];
-    }
-}
+export const getProduct = async (id)=>{
 
-export const detailProduct = async (id)=>{
-    const url = `products/${id}`;
-    try{
+    try {
+        const url =id==null ? URL+ "/get": URL `?id=${id}`;
         const rs = await api.get(url);
         return rs.data;
-    }catch (error){
-        return {};
+    } catch (error) {
+        return error;
     }
 }
