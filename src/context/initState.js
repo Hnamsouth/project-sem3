@@ -1,14 +1,19 @@
 const token= localStorage.getItem("token");
+export const Iuser = {
+    profile:null,cart:[],favorite:[],order:[]
+}
+
 const STATE={
-    cart:[],
-    favourites:[],
     token:token,
     loading:false,
     afterScript:[],
     userStyle:null,
     AuthModal:false,
     AuthForm:true,
-    User:{profile:null,cart:[],favorite:[]}
+    User:Iuser
 }
+
+
+
 
 export default STATE;

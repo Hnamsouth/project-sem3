@@ -7,20 +7,24 @@ import UserContext from "../../context/userContext";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-// import './demo-21.css'
 
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 
 const HomeU = () => {
     const {state,dispatch}=useContext(UserContext);
     const [product, setProduct] = useState([]);
     const [img,setimg]=useState(null);
+    const logo =[1,2,3,4,5,6,7];
+    const adCP = [1,2];
+
 
     const getAllProduct = async () => {
         const p = await getProduct();
         setProduct(p);
     }
-
     useEffect(() => {
         getAllProduct();
     }, []);
@@ -31,70 +35,48 @@ const HomeU = () => {
 
     return (
         <main className="main">
-        <Helmet >
-            <link rel="stylesheet" href="../user/assets/css/demos/demo-21.css"/> 
-        </Helmet>
+            {/* Ad campaign */}
             <div className="intro-slider-container mb-5">
-                <div className="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl"
-                    data-owl-options='{
-                                    "dots": true,
-                                    "nav": false, 
-                                    "responsive": {
+                <OwlCarousel className='intro-slider owl-theme mb-5 owl-nav-inside owl-light'  items={1} nav loop={true} dots={false}  responsive={{
                                         "1200": {
                                             "nav": false,
                                             "dots": false
                                         }
-                                    }
-                                }'>
-                    <div className="intro-slide" style={{ backgroundImage: "url(../user/assets/images/demos/demo-21/slider/slide-1.png)" }} >
-                        <div className="container intro-content" >
-                            <div className="row">
-                                <div className="intro">
-                                    <div className="title">
-                                        <h3>WOMEN'S</h3>
-                                    </div>
-                                    <div className="content">
-                                        <h3>RUNNING &</h3>
-                                        <h3>TRAINING SHIRTS</h3>
-                                    </div>
-                                    <div className="price">
-                                        <h3>SAVE UP TO 30%</h3>
-                                    </div>
-                                    <div className="action">
-                                        <a href="category.html" className="btn btn-primary">
-                                            <span>DISCOVER NOW</span>
-                                        </a>
-                                    </div>
+                        }}>
+                    {
+                        adCP.map((e)=>{
+                            return (
+                                <div className="intro-slide" style={{ backgroundImage: `url(../user/assets/images/demos/demo-21/slider/slide-${e}.png)` }} >
+                                    <div className="container intro-content" >
+                                        <div className="row">
+                                            <div className="intro">
+                                                <div className="title">
+                                                    <h3>WOMEN'S</h3>
+                                                </div>
+                                                <div className="content">
+                                                    <h3>RUNNING &</h3>
+                                                    <h3>TRAINING SHIRTS</h3>
+                                                </div>
+                                                <div className="price">
+                                                    <h3>SAVE UP TO 30%</h3>
+                                                </div>
+                                                <div className="action">
+                                                    <a href="category.html" className="btn btn-primary">
+                                                        <span>DISCOVER NOW</span>
+                                                    </a>
+                                                </div>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="intro-slide" style={{ backgroundImage: "url(../user/assets/images/demos/demo-21/slider/slide-2.jpg)" }}>
-                        <div className="container intro-content">
-                            <div className="row">
-                                <div className="intro">
-                                    <div className="title">
-                                        <h3 className="darkWhite">DEAL OF THE DAY</h3>
-                                    </div>
-                                    <div className="content">
-                                        <h3>IT'S TIME TO UPGRADE<br />YOUR HIKING KIT</h3>
-                                    </div>
-                                    <div className="price">
-                                        <h3 className="darkWhite">SAVE UP TO 15%</h3>
-                                    </div>
-                                    <div className="action">
-                                        <a href="category.html" className="btn btn-primary">
-                                            <span>DISCOVER NOW</span>
-                                        </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            );
+                        })
+                    }
+                </OwlCarousel>
                 <span className="slider-loader"></span>
             </div>
+            {/* category */}
             <div className="container banner-container">
                 <div className="col-lg-4 col-md-8 col-sm-10 col-12 col-pd1">
                     <a href="category.html">
@@ -157,14 +139,9 @@ const HomeU = () => {
                     </div>
                 </div>
             </div>
+            {/* Logo partner */}
             <div className="container logos">
-                <div className="owl-carousel mb-5 owl-simple" data-toggle="owl"
-                    data-owl-options='{
-                                    "nav": true, 
-                                    "dots": false,
-                                    "margin": 10,
-                                    "loop": false,
-                                    "responsive": {
+                <OwlCarousel className='owl-simple mb-5' margin={20} items={4} nav navContainerClass="owl-nav"  dots={false}  responsive={{
                                         "0": {
                                             "items":2
                                         },
@@ -180,94 +157,91 @@ const HomeU = () => {
                                         "1024": {
                                             "items":6
                                         }
-                                    }
-                                }'>
-                    <a href="#" className="brand">
-                        <img src="../user/assets/images/brands/1.png" alt="Brand Name" />
-                    </a>
-
-                    <a href="#" className="brand">
-                        <img src="../user/assets/images/brands/2.png" alt="Brand Name" />
-                    </a>
-
-                    <a href="#" className="brand">
-                        <img src="../user/assets/images/brands/3.png" alt="Brand Name" />
-                    </a>
-
-                    <a href="#" className="brand">
-                        <img src="../user/assets/images/brands/4.png" alt="Brand Name" />
-                    </a>
-
-                    <a href="#" className="brand">
-                        <img src="../user/assets/images/brands/5.png" alt="Brand Name" />
-                    </a>
-
-                    <a href="#" className="brand">
-                        <img src="../user/assets/images/brands/6.png" alt="Brand Name" />
-                    </a>
-
-                    <a href="#" className="brand">
-                        <img src="../user/assets/images/brands/7.png" alt="Brand Name" />
-                    </a>
-                </div>
+                        }}>
+                    {
+                        logo.map((e)=>{
+                            return (
+                                <a href="#" className="brand">
+                                    <img src={`../user/assets/images/brands/${e}.png`} alt="Brand Name" />
+                                </a>
+                            );
+                        })
+                    }
+                </OwlCarousel>
             </div>
-            <div className="container bestsellers">
-                <div className="row">
-                        {product.length > 0 && product.map((p,i) => {
-                                return i<5?(
-                                    <div className="col-xl-5col col-lg-3 col-md-4 col-6" key={i}>
-                                <div className="product demo21">
-                                    <figure className="product-media">
-                                        {
-                                            i<2?(
-                                                <span className={"product-label label-new"}>New</span>
-                                            ):i==2 || i==3?(
-                                                <span className={"product-label label-sale"}>Sale</span>
-                                            ):(<></>)
-                                        }
-                                        <Link to={`/product/${p.id}`}>
-                                            <img src={p.productColors[0].productColorImages[0].url} alt="Product image" className="product-image" style={{ maxWidth:333 +"px",maxHeight:333 +"px"}} />
-                                            <img src={p.productColors[0].productColorImages[1].url} alt="Product image" className="product-image-hover" style={{maxWidth:333 +"px",maxHeight:333 +"px"}} />
-                                        </Link>
-                                    </figure>
-                                    <div className="product-body text-center">
-                                        <div className="product-cat">
-                                            <a href="#">{p.categoryDetail.category.name}</a>
-                                        </div>
-                                        <h3 className="product-title"><a href="product.html">{p.name}</a></h3>
-                                        <div className="product-price">
-                                            <span className="new-price">${p.price}</span>
-                                            {i==2||i==3?(
-                                                <span className="old-price">Was ${p.price+50}</span>
-                                            ):(<></>)}
-                                        </div>
-                                        <div className="ratings-container">
-                                            <div className="ratings">
-                                                <div className="ratings-val" style={{ width: 80 + "%" }}></div>
+            {/* Best sellers product */}
+            <div class="container bestsellers">
+                <hr class="mb-3"/>
+                <div class="heading">
+                    <h2 class="title text-center">BEST SELLERS</h2>
+                    <p class="content text-center mb-4">The Trends Boutique: The latest fashion trends from top brands!</p>
+                </div>
+                {product.length > 0 && (
+                    <OwlCarousel className='owl-theme owl-simple carousel-equal-height carousel-with-shadow'  margin={20} items={4} nav  navContainerClass="owl-nav" responsive={{
+                            "0": {
+                                "items":2
+                            },
+                            "768": {
+                                "items":3
+                            },
+                            "992": {
+                                "items":4
+                            }
+                        }}>
+                        {product.map((p,i) => {
+                                    return i<5?(
+                                        <div className="product demo21">
+                                        <figure className="product-media">
+                                            {
+                                                i<2?(
+                                                    <span className={"product-label label-new"}>New</span>
+                                                ):i==2 || i==3?(
+                                                    <span className={"product-label label-sale"}>Sale</span>
+                                                ):(<></>)
+                                            }
+                                            <Link to={`/product/${p.id}`}>
+                                                <img src={p.productColors[0].productColorImages[0].url} alt="Product image" className="product-image" style={{ maxWidth:333 +"px",maxHeight:333 +"px"}} />
+                                                <img src={p.productColors[0].productColorImages[1].url} alt="Product image" className="product-image-hover" style={{maxWidth:333 +"px",maxHeight:333 +"px"}} />
+                                            </Link>
+                                        </figure>
+                                        <div className="product-body text-center">
+                                            <div className="product-cat">
+                                                <a href="#">{p.categoryDetail.category.name}</a>
                                             </div>
-                                            <span className="ratings-text">( {5} Reviews )</span>
-                                        </div>
-                                        <div className="product-nav">
-                                            {p.productColors.map((e,id)=>{
-                                            return  (
-                                                <a type="button" className=" banner-hover" onClick={()=>setimg(e)} key={id}>
-                                                    <img src={e.productColorImages[0].url} style={{maxWidth:32+'px'}} className=" ml-3"/>
-                                                </a>
-                                            )
-                                            })}
-                                        </div>
-                                        <div className="product-action">
-                                            <Link to={`/product/${p.id}`} type="button" className="btn-product btn-cart" title="Add to cart" ><span>ADD TO CART</span></Link>
-                                            <a type="button" className="btn-addtolist"  ><span>&nbsp;Add to Wishlist</span></a>
+                                            <h3 className="product-title"><a href="product.html">{p.name}</a></h3>
+                                            <div className="product-price">
+                                                <span className="new-price">${p.price}</span>
+                                                {i==2||i==3?(
+                                                    <span className="old-price">Was ${p.price+50}</span>
+                                                ):(<></>)}
+                                            </div>
+                                            <div className="ratings-container">
+                                                <div className="ratings">
+                                                    <div className="ratings-val" style={{ width: 80 + "%" }}></div>
+                                                </div>
+                                                <span className="ratings-text">( {5} Reviews )</span>
+                                            </div>
+                                            <div className="product-nav">
+                                                {p.productColors.map((e,id)=>{
+                                                return  (
+                                                    <a type="button" className=" banner-hover" onClick={()=>setimg(e)} key={id}>
+                                                        <img src={e.productColorImages[0].url} style={{maxWidth:32+'px'}} className=" ml-3"/>
+                                                    </a>
+                                                )
+                                                })}
+                                            </div>
+                                            <div className="product-action">
+                                                <Link to={`/product/${p.id}`} type="button" className="btn-product btn-cart" title="Add to cart" ><span>ADD TO CART</span></Link>
+                                                <a type="button" className="btn-addtolist"  ><span>&nbsp;Add to Wishlist</span></a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                                ):"";
-                            })
-                        }
-                        </div>
+                                    ):"";
+                                })}
+                </OwlCarousel>
+                )}
             </div>
+
             <div className="choose-style">
                 <div className="container row">
                     <div className="banner-intro col-lg-5">

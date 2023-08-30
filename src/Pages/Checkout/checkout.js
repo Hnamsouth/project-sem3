@@ -1,4 +1,11 @@
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useContext, useEffect ,useState} from "react";
+import { Subtotal } from "../../Service/app.service";
+import UserContext from "../../context/userContext";
+
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
 
 
 const initialOptions = {
@@ -7,8 +14,33 @@ const initialOptions = {
     intent: "capture",
 };
 const Checkout = () => {
+    const {state,dispatch}=useContext(UserContext);
+    const [subtotal,setSubtotal]=useState(0);
 
-    
+    const schema =yup.object({
+        Firstname:yup.string(),
+        Laststname:yup.string(),
+        Street:yup.string(),
+        City:yup.string(),
+        District:yup.string(),
+        Postcode:yup.string(),
+        Phone:yup.string(),
+        Email:yup.string(),
+        DeliveryMethod:yup.string(),
+        Laststname:yup.string(),
+        Laststname:yup.string(),
+        Laststname:yup.string(),
+        Laststname:yup.string(),
+        Laststname:yup.string(),
+    }).required();
+
+    const {register,handleSubmit,setValue,formState:{errors}}=useForm({
+        resolver:yupResolver(schema),
+    })
+
+    useEffect(()=>{
+        Subtotal(state.User.cart,setSubtotal)
+    },[state])
    return(
     <div>
         <nav aria-label="breadcrumb" className="breadcrumb-nav">
@@ -93,17 +125,15 @@ const Checkout = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {state.User.cart.map((e,i)=>(
                         <tr>
-                        <td><a href="#">Beige knitted elastic runner shoes</a></td>
-                        <td>$84.00</td>
+                            <td><a href="#">{e.productSize.productColor.product.name}</a></td>
+                            <td>${e.productSize.productColor.product.price*e.buyQty}</td>
                         </tr>
-                        <tr>
-                        <td><a href="#">Blue utility pinafore denimdress</a></td>
-                        <td>$76,00</td>
-                        </tr>
+                        ))}
                         <tr className="summary-subtotal">
                         <td>Subtotal:</td>
-                        <td>$160.00</td>
+                        <td>${subtotal}</td>
                         </tr>{/* End .summary-subtotal */}
                         <tr>
                         <td>Shipping:</td>
@@ -111,19 +141,19 @@ const Checkout = () => {
                         </tr>
                         <tr className="summary-total">
                         <td>Total:</td>
-                        <td>$160.00</td>
+                        <td>${subtotal}</td>
                         </tr>{/* End .summary-total */}
                     </tbody>
                     </table>{/* End .table table-summary */}
                     <PayPalScriptProvider options={initialOptions}>
-                        <PayPalButtons createOrder={(data, actions) => {
+                        <PayPalButtons  createOrder={(data, actions) => {
                             console.log(data)
                             return actions.order.create({
                                 purchase_units: [
                                 {
                                     description: "safasgagas",
                                     "amount": {
-                                        "value": 100
+                                        "value":subtotal
                                     },
                                 }
                                 ]

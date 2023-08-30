@@ -6,6 +6,8 @@ import jwtDecode from 'jwt-decode';
 import api from '../../Service/api';
 import { useNavigate  } from 'react-router-dom';
 import { getNavData } from '../../Service/app.service';
+import { Iuser } from '../../context/initState';
+
 
 const HEADER = ()=>{
     const {state,dispatch}=useContext(UserContext);
@@ -18,7 +20,7 @@ const HEADER = ()=>{
         state.token="";
         api.defaults.headers.common["Authorization"]="";
         localStorage.removeItem("token");
-        dispatch({type:"SET_USER",payload:null})
+        dispatch({type:"SET_USER",payload:Iuser})
         navigate("/");
     }
     const GetNav = async ()=>{
@@ -127,67 +129,6 @@ const HEADER = ()=>{
                                                     </li>
                                                 );
                                             })}
-                                            {/*
-                                            <li className="megamenu-container ">
-                                                <a href="index.html" className="sf-with-ul">OUTLET</a>
-                                            </li>
-                                             <li>
-                                                <a href="category.html" className="sf-with-ul">Shop</a>
-                                                <div className="megamenu megamenu-md">
-                                                    <div className="row no-gutters">
-                                                        <div className="col-md-8">
-                                                            <div className="menu-col">
-                                                                <div className="row">
-                                                                    <div className="col-md-6">
-                                                                        <div className="menu-title">Shop with sidebar</div>
-                                                                        <ul>
-                                                                            <li><a href="category-list.html">Shop List</a></li>
-                                                                            <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
-                                                                            <li><a href="category.html">Shop Grid 3 Columns</a></li>
-                                                                            <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                                                                            <li><a href="category-market.html"><span>Shop Market<span className="tip tip-new">New</span></span></a></li>
-                                                                        </ul>
-
-                                                                        <div className="menu-title">Shop no sidebar</div>
-                                                                        <ul>
-                                                                            <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span className="tip tip-hot">Hot</span></span></a></li>
-                                                                            <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
-                                                                        </ul>
-                                                                    </div>
-
-                                                                    <div className="col-md-6">
-                                                                        <div className="menu-title">Product Category</div>
-                                                                        <ul>
-                                                                            <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                                                                            <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span className="tip tip-new">New</span></span></a></li>
-                                                                        </ul>
-                                                                        <div className="menu-title">Shop Pages</div>
-                                                                        <ul>
-                                                                            <li><a href="cart.html">Cart</a></li>
-                                                                            <li><a href="checkout.html">Checkout</a></li>
-                                                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                                                            <li><a href="dashboard.html">My Account</a></li>
-                                                                            <li><a href="#">Lookbook</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-md-4">
-                                                            <div className="banner banner-overlay">
-                                                                <a href="category.html" className="banner banner-menu">
-                                                                    <img src="../user/assets/images/menu/banner-1.jpg" alt="Banner"/>
-
-                                                                    <div className="banner-content banner-content-top">
-                                                                        <div className="banner-title text-white">Last <br/>Chance<br/><span><strong>Sale</strong></span></div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li> */}
                                             <li>
                                                 <a href="#" className="sf-with-ul">Pages</a>
                                                 <ul>
@@ -289,13 +230,13 @@ const HEADER = ()=>{
                                     <div className="wishlist">
                                         <Link to={"/favorite"} title="Wishlist">
                                             <i className="icon-heart-o" />
-                                            <span className="wishlist-count">{state.User.favorite.length>0?state.User.favorite.length:0}</span>
+                                            <span className="wishlist-count">{state.User.favorite && (state.User.favorite.length>0?state.User.favorite.length:0)}</span>
                                         </Link>
                                     </div>
                                     <div className="dropdown cart-dropdown">
                                         <Link to={"/cart"} className="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                             <i className="icon-shopping-cart" />
-                                            <span className="cart-count">{state.User.cart.length>0?state.User.cart.length:0}</span>
+                                            <span className="cart-count">{state.User.cart && (state.User.cart.length>0?state.User.cart.length:0)}</span>
                                         </Link>
                                         {/* <div className="dropdown-menu dropdown-menu-right">
                                             <div className="dropdown-cart-products">

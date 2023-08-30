@@ -6,16 +6,20 @@ import { Helmet } from "react-helmet";
 import { AddCart } from "../../Service/cart.service";
 import { useNavigate } from 'react-router-dom';
 import UserContext from "../../context/userContext";
+import ImageZoom from "react-image-zooom";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetail= ()=>{
     const {id} = useParams("id");
     let navigate = useNavigate();
     const {state,dispatch}=useContext(UserContext);
-    const [data,setData]=useState({products:[],product:null,pColor:null,imgZoom:null,pSize:[],pQty:0,qtySelect:0,sizeSelected:0});
-    const [errMess,setErrMess]=useState({size:false,qty:false});
+    const [data,setData]=useState({products:[],product:null,pColor:null,imgZoom:null,pSize:[],pQty:0,qtySelect:1,sizeSelected:0});
+    const [errMess,setErrMess]=useState({size:false,Pqty:false});
+
     const getData = async()=>{
         const p = await getProduct(id);
-        console.log(p)
         const ps = await getProduct();
         setData({
             products:ps,
@@ -23,7 +27,7 @@ const ProductDetail= ()=>{
             imgZoom:p.productColors[0].productColorImages[0],
             pSize:p.productColors[0].productSizes,
             pQty:0,
-            qtySelet:0,
+            qtySelect:1,
             sizeSelected:0
         });
     }
@@ -32,41 +36,76 @@ const ProductDetail= ()=>{
             data['sizeSelected']=e;
             data['pQty']=data['pSize'].find(a=>a.id==e).qty;
             data['qtySelect']=data['pQty']==0?0:data['qtySelect'];
-            setErrMess({size:false,qty:errMess['qty']})
+            setErrMess((prev) => ({prev,Pqty:data['pQty']<10}))
         }else{
             data['sizeSelected']=null;
             data['pQty']=0;
             data['qtySelect']=0;
         }
     }
-    const handleQty = (qty)=>{
-        data['qtySelect']=qty
-        console.log(data)
-    }
+    const notify = ()=>toast('🦄 This already in your shopping cart !', {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+
     const AddToCart=async ()=>{
-        if(data['pQty']==0 || data['sizeSelected']==0) {
-            let mess= {size:data['pQty']==0 ,qty:data['sizeSelected']==0};
-            setErrMess(mess);
+        if( data['sizeSelected']==0) {
+            errMess.size=data['qtySelect']==0;
+            setErrMess(errMess);
         }else{
             let rs = await AddCart({productSizeId:data['sizeSelected'],buyQty:data['qtySelect']});
-            console.log(rs)
             if(!rs){
                 navigate("/login")
+            }else if(rs.existed){
+                notify();
             }else{
-                let c = state.cart.push(rs);
-                dispatch({type:"ADD_CART",payload:c})
+                state.User.cart.push(rs)
+                dispatch({type:"SET_USER",payload:state.User})
             }
         }
     }
 
+
+    const useScript = useUrl=> {
+        const script = document.createElement('script');
+        script.src = useUrl;
+        script.async = true;
+        document.body.appendChild(script);
+        return ()=>{
+            document.body.removeChild(script);
+        }
+    };
+    const RunScript = () => {
+        useScript("../user/assets/js/main.js");
+    }   
+
     useEffect(()=>{
         getData();
+        // RunScript()
     },[])
     useEffect(()=>{
         getData()
     },[id])
     return (
         <>
+            <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                />
             <Helmet>
                 <link rel="stylesheet" href="..user/assets/css/plugins/nouislider/nouislider.css"/>
             </Helmet>
@@ -98,7 +137,9 @@ const ProductDetail= ()=>{
                         <div className="product-gallery product-gallery-vertical">
                         <div className="row">
                                 <figure className="product-main-image">
-                                        <img id="product-zoom" src={data['imgZoom']?data['imgZoom'].url:""} data-zoom-image={data['imgZoom']?data['imgZoom'].url:""} alt="product image" />
+                                    {data['imgZoom'] && (
+                                        <ImageZoom   src={data['imgZoom'].url} alt="A image to apply the ImageZoom plugin" zoom="200" />
+                                    )}
                                         <a href="#" id="btn-product-gallery" className="btn-product-gallery">
                                             <i className="icon-arrows" />
                                         </a>
@@ -127,12 +168,12 @@ const ProductDetail= ()=>{
                             <a className="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
                         </div>
                         <div className="product-price">
-                            $84.00
+                            ${data['product'] && (data['product'].price)}
                         </div>
-                        <div className="product-content">
+                        <div className="product-content mb-3">
                             <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing. Sed lectus. </p>
                         </div>{/* End .product-content */}
-                        <div className="details-filter-row details-row-size">
+                        <div className="details-filter-row details-row-size  mb-3">
                             <label>Color:</label>
                             <div className="product-nav product-nav-thumbs">
                             {
@@ -151,7 +192,7 @@ const ProductDetail= ()=>{
                             }
                             </div>{/* End .product-nav */}
                         </div>{/* End .details-filter-row */}
-                        <div className="details-filter-row details-row-size">
+                        <div className="details-filter-row details-row-size mb-3">
                             <label htmlFor="size">Size:</label>
                             <div className="select-custom">
                             <select name="size" id="size" className="form-control" onChange={(e)=>handleSize(parseInt(e.target.value))}>
@@ -170,7 +211,11 @@ const ProductDetail= ()=>{
                                 <span className="text-danger">Select size please...!</span>
                             ):""}
                         </div>{/* End .details-filter-row */}
-                        <div className="details-filter-row details-row-size">
+                        {errMess['Pqty']?(
+                                <span className="text-danger ml-1"><strong>Only {data['pQty']} left in stock</strong></span>
+                            ):""}
+                        
+                        {/* <div className="details-filter-row details-row-size">
                             <label htmlFor="qty">Qty:</label>
                             <div className="product-details-quantity mr-5">
                             <input type="number" id="qty" className="form-control" 
@@ -178,12 +223,16 @@ const ProductDetail= ()=>{
                                 defaultValue={1} min={1} 
                                 max={data['pQty']} 
                                 step={1} data-decimals={0} required />
-                            </div>{/* End .product-details-quantity */}
-                                
+                            </div>
+                            {errMess['size']?(
+                                <span className="text-danger mr-5">Low quantity</span>
+                            ):""}
+                            {errMess['size']?(
+                                <span className="text-danger mr-5">Select size please...!</span>
+                            ):""}
                             
-                            
-                        </div>{/* End .details-filter-row */}
-                        <div className="product-details-action">
+                        </div> */}
+                        <div className="product-details-action  mb-3">
                             <a type="button" className="btn-product btn-cart" onClick={()=>AddToCart()} ><span>add to cart</span></a>
 
                             <div className="details-action-wrapper">
@@ -191,7 +240,7 @@ const ProductDetail= ()=>{
                             <a href="#" className="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a>
                             </div>{/* End .details-action-wrapper */}
                         </div>{/* End .product-details-action */}
-                        <div className="product-details-footer">
+                        <div className="product-details-footer  mb-3">
                             <div className="product-cat">
                             <span>Category:</span>
                             <a href="#">Women</a>,

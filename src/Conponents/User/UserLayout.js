@@ -1,12 +1,21 @@
+import { useHref } from "react-router-dom";
 import FOOTER from "./footer";
 import HEADER from "./header";
 import React,{useEffect, useState} from "react";
+import { Helmet } from "react-helmet";
 
 
 
 const UserLayout =  (props)=>{
+    const route= useHref();
+    
     return (
             <>
+            <Helmet>
+                {route=="/"?
+                    <link rel="stylesheet" href="../user/assets/css/demos/demo-21.css" />:""
+                }
+            </Helmet>
             <div class="page-wrapper">
                             <HEADER/>
                             <main className="main">

@@ -1,14 +1,37 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/userContext";
 import { Link } from "react-router-dom";
+import { deleteCart, getProductInCart, updateCart } from "../../Service/cart.service";
+import { Subtotal } from "../../Service/app.service";
 
 const UserCarts = ()=>{
     const {state,dispatch}=useContext(UserContext);
-    console.log(state.User)
-
-    const handleBuyQty = (qty)=>{
-
+    const [subtotal,setSubtotal]=useState(0)
+    const handleBuyQty = async (data)=>{
+        console.log(state.User.cart)
+        if(data.cart.productSize.qty<(data.cart.buyQty+data.qty) || (data.cart.buyQty+data.qty) < 1 ){
+            // show err
+            alert(123)
+        }else{
+            data.cart.buyQty+=data.qty;
+            let rs = await updateCart(data.cart);
+            if(rs.updated){
+                state.User.cart.splice(data.index,1,data.cart);
+                dispatch({type:"SET_USER",payload:state.User})
+            }
+        }
     }
+    const handleDelete = async (data)=>{
+        let rs = await deleteCart(data.id);
+        if(rs.deleted){
+            state.User.cart.splice(data.index,1);
+            dispatch({type:"SET_USER",payload:state.User})
+        }
+    }
+
+    useEffect(()=>{
+        Subtotal(state.User.cart,setSubtotal)
+    },[state])
 
 
     return (
@@ -30,7 +53,9 @@ const UserCarts = ()=>{
                         <thead>
                         <tr>
                             <th>Product</th>
+                            <th>Size</th>
                             <th>Price</th>
+
                             <th>Quantity</th>
                             <th>Total</th>
                             <th />
@@ -39,7 +64,7 @@ const UserCarts = ()=>{
                         <tbody>
                         {state.User.cart.length> 0 && state.User.cart.map( (e,i)=>{ 
                             return (
-                                <tr key={i}>
+                            <tr key={i}>
                                 <td className="product-col">
                                     <div className="product">
                                         <figure className="product-media">
@@ -52,27 +77,31 @@ const UserCarts = ()=>{
                                         </h3>
                                     </div>
                                 </td>
+                                <td className="price-col">{e.productSize.size.name}</td>
                                 <td className="price-col">${e.productSize.productColor.product.price}</td>
                                 <td className="quantity-col">
-                                <div className="cart-product-quantity">
-                                    <input type="number" className="form-control" defaultValue={1} min={1} max={10} step={1} data-decimals={0} required style={{display: 'none'}} />
-                                    <div className="input-group  input-spinner">
-                                        <div className="input-group-prepend">
-                                            <button style={{minWidth: '26px'}} className="btn btn-decrement btn-spinner" type="button" onClick={()=>handleBuyQty(-1)}>
-                                                <i className="icon-minus" />
-                                            </button>
+                                    <div className="cart-product-quantity">
+                                        <input type="number" className="form-control" defaultValue={1} min={1} max={10} step={1} data-decimals={0} required style={{display: 'none'}} />
+                                        <div className="input-group  input-spinner">
+                                            <div className="input-group-prepend">
+                                                <button style={{minWidth: '26px'}} className="btn btn-decrement btn-spinner" type="button" onClick={()=>handleBuyQty({cart:e,qty:-1,index:i})}>
+                                                    <i className="icon-minus" />
+                                                </button>
+                                            </div>
+                                            <input type="number" style={{textAlign: 'center'}} className="form-control" min={1} defaultValue={e.buyQty} value={e.buyQty} placeholder />
+                                            <div className="input-group-append">
+                                                <button style={{minWidth: '26px'}} className="btn btn-increment btn-spinner" type="button" onClick={()=>handleBuyQty({cart:e,qty:1,index:i})}>
+                                                    <i className="icon-plus" />
+                                                </button>
+                                            </div>
                                         </div>
-                                        <input type="text" style={{textAlign: 'center'}} className="form-control" defaultValue={e.buyQty} required placeholder />
-                                        <div className="input-group-append">
-                                            <button style={{minWidth: '26px'}} className="btn btn-increment btn-spinner" type="button" onClick={()=>handleBuyQty(1)}>
-                                                <i className="icon-plus" />
-                                            </button>
-                                        </div>
+                                        {e.productSize.qty<10 && (
+                                            <span className="text-danger "><strong>Only {e.productSize.qty} left</strong></span>
+                                        )}
                                     </div>
-                                </div>
                                 </td>
                                 <td className="total-col">${e.productSize.productColor.product.price*e.buyQty}</td>
-                                <td className="remove-col"><button className="btn-remove"><i className="icon-close" /></button></td>
+                                <td className="remove-col"><button className="btn-remove" onClick={()=>handleDelete({id:e.id,index:i})}><i className="icon-close" /></button></td>
                             </tr>
                             );
                         })}
@@ -91,7 +120,6 @@ const UserCarts = ()=>{
                             </div>{/* End .input-group */}
                         </form>
                         </div>{/* End .cart-discount */}
-                        <a href="#" className="btn btn-outline-dark-2"><span>UPDATE CART</span><i className="icon-refresh" /></a>
                     </div>{/* End .cart-bottom */}
                     </div>{/* End .col-lg-9 */}
                     <aside className="col-lg-3">
@@ -100,47 +128,29 @@ const UserCarts = ()=>{
                         <table className="table table-summary">
                         <tbody>
                             <tr className="summary-subtotal">
-                            <td>Subtotal:</td>
-                            <td>$160.00</td>
+                                <td>Subtotal:</td>
+                                <td>${subtotal}</td>
                             </tr>{/* End .summary-subtotal */}
                             <tr className="summary-shipping">
-                            <td>Shipping:</td>
-                            <td>&nbsp;</td>
+                                <td>Shipping:</td>
+                                <td>&nbsp;</td>
                             </tr>
                             <tr className="summary-shipping-row">
-                            <td>
-                                <div className="custom-control custom-radio">
-                                <input type="radio" id="free-shipping" name="shipping" className="custom-control-input" />
-                                <label className="custom-control-label" htmlFor="free-shipping">Free Shipping</label>
-                                </div>{/* End .custom-control */}
-                            </td>
-                            <td>$0.00</td>
-                            </tr>{/* End .summary-shipping-row */}
-                            <tr className="summary-shipping-row">
-                            <td>
-                                <div className="custom-control custom-radio">
-                                <input type="radio" id="standart-shipping" name="shipping" className="custom-control-input" />
-                                <label className="custom-control-label" htmlFor="standart-shipping">Standart:</label>
-                                </div>{/* End .custom-control */}
-                            </td>
-                            <td>$10.00</td>
-                            </tr>{/* End .summary-shipping-row */}
-                            <tr className="summary-shipping-row">
-                            <td>
-                                <div className="custom-control custom-radio">
-                                <input type="radio" id="express-shipping" name="shipping" className="custom-control-input" />
-                                <label className="custom-control-label" htmlFor="express-shipping">Express:</label>
-                                </div>{/* End .custom-control */}
-                            </td>
-                            <td>$20.00</td>
-                            </tr>{/* End .summary-shipping-row */}
+                                <td>
+                                    <div className="custom-control custom-radio">
+                                    <input type="radio" id="free-shipping" checked name="shipping" className="custom-control-input" />
+                                    <label className="custom-control-label" htmlFor="free-shipping">Free Shipping</label>
+                                    </div>{/* End .custom-control */}
+                                </td>
+                                <td>$0.00</td>
+                            </tr>
                             <tr className="summary-shipping-estimate">
                             <td>Estimate for Your Country<br /> <a href="dashboard.html">Change address</a></td>
                             <td>&nbsp;</td>
                             </tr>{/* End .summary-shipping-estimate */}
                             <tr className="summary-total">
                             <td>Total:</td>
-                            <td>$160.00</td>
+                            <td>${subtotal}</td>
                             </tr>{/* End .summary-total */}
                         </tbody>
                         </table>{/* End .table table-summary */}
@@ -155,4 +165,5 @@ const UserCarts = ()=>{
         
     );
 }
+
 export default UserCarts;

@@ -10,6 +10,7 @@ import UserContext from '../../../context/userContext';
 import { CheckEmail, Uregister, getProfile } from '../../../Service/auth.service';
 import { useNavigate  } from 'react-router-dom';
 import api from '../../../Service/api';
+import { Iuser } from '../../../context/initState';
 
 const ERR={
     PASSWORD:"Password must contain 1 uppercase letter, 1 lowercase letter and 1 number",
@@ -63,7 +64,7 @@ const Register= () =>{
         api.defaults.headers.common["Authorization"]=`Bearer ${rs.token}`
         localStorage.setItem("token",rs.token)
         let up = await getProfile();
-        dispatch({type:"SET_USER",payload:{profile:up.profile,cart:up.cart,favorite:up.favorite}})
+        dispatch({type:"SET_USER",payload:Iuser})
         
         dispatch({type:"HIDE_LOADING"});
         navigate("/");

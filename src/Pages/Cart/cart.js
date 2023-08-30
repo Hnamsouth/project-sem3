@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Plus, Dash } from 'react-bootstrap-icons';
 import { useParams } from 'react-router-dom';
-import {deleteCart, update} from '../../Service/cart.service'
+import {deleteCart} from '../../Service/cart.service'
 import { useEffect } from 'react';
 import { getAllProductInCart } from '../../Conponents/getAllProduct'
 
@@ -15,12 +15,12 @@ const Cart = () => {
     },[]);
 
     const deleteProductInCart = async(id)=>{
-        const d = await deleteCart(id);
-        getAllProductInCart(setCart);
+        // const d = await deleteCart(id);
+        // getAllProductInCart(setCart);
     }
 
     const updateCart = async(data)=>{
-        await update(data)
+        // await update(data)
     }
 
     const onQuantityChange = (action,id) => {

@@ -19,13 +19,11 @@ export const getProductInCart = async ()=>{
         return error;
     }
 }
-export const update = async (data)=>{
+export const updateCart = async (data)=>{
     try {
         const url=URL;
         const rs= await api.put(url,{ "id": data.id,
         "buyQty": data.buyQty,
-        "productColorId": data.productColorId,
-        "productId": data.productId,
         "productSizeId": data.productSizeId,
         "userId": data.userId});
         return rs.data;
