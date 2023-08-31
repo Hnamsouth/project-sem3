@@ -38,12 +38,12 @@ const ProductDetail= ()=>{
             data['qtySelect']=data['pQty']==0?0:data['qtySelect'];
             setErrMess((prev) => ({prev,Pqty:data['pQty']<10}))
         }else{
-            data['sizeSelected']=null;
+            data['sizeSelected']=0;
             data['pQty']=0;
             data['qtySelect']=0;
         }
     }
-    const notify = ()=>toast('🦄 This already in your shopping cart !', {
+    const notify = () => toast('🦄 This already in your shopping cart !', {
         position: "top-left",
         autoClose: 5000,
         hideProgressBar: false,
@@ -57,7 +57,7 @@ const ProductDetail= ()=>{
     const AddToCart=async ()=>{
         if( data['sizeSelected']==0) {
             errMess.size=data['qtySelect']==0;
-            setErrMess(errMess);
+            setErrMess({...errMess,size:true});
         }else{
             let rs = await AddCart({productSizeId:data['sizeSelected'],buyQty:data['qtySelect']});
             if(!rs){
@@ -71,41 +71,17 @@ const ProductDetail= ()=>{
         }
     }
 
-
-    const useScript = useUrl=> {
-        const script = document.createElement('script');
-        script.src = useUrl;
-        script.async = true;
-        document.body.appendChild(script);
-        return ()=>{
-            document.body.removeChild(script);
-        }
-    };
-    const RunScript = () => {
-        useScript("../user/assets/js/main.js");
-    }   
-
     useEffect(()=>{
         getData();
-        // RunScript()
     },[])
     useEffect(()=>{
         getData()
     },[id])
+    useEffect(()=>{
+
+    },[data['pSize']])
     return (
         <>
-            <ToastContainer
-                position="top-left"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                />
             <Helmet>
                 <link rel="stylesheet" href="..user/assets/css/plugins/nouislider/nouislider.css"/>
             </Helmet>
@@ -183,7 +159,8 @@ const ProductDetail= ()=>{
                                         onClick={()=>{
                                             data['pColor']=e;
                                             data['imgZoom']=e.productColorImages[0];
-                                            data['pSize']=e.productSizes
+                                            data['pSize']=e.productSizes;
+                                            data['sizeSelected']=0
                                         }}>
                                             <img src={e.productColorImages[0].url} alt="product desc" />
                                         </a>
@@ -195,16 +172,18 @@ const ProductDetail= ()=>{
                         <div className="details-filter-row details-row-size mb-3">
                             <label htmlFor="size">Size:</label>
                             <div className="select-custom">
-                            <select name="size" id="size" className="form-control" onChange={(e)=>handleSize(parseInt(e.target.value))}>
-                                <option value="#" selected="selected">Select a size</option>
-                                {
-                                    data['pSize'] && data['pSize'].map((e,i)=>{
-                                        return (
-                                            <option value={e.id}>{e.size.name}</option>
-                                        );
-                                    })    
+                            {
+                                    data['pSize'] && (
+                                        <select name="size" id="size" className="form-control" onChange={(e)=>handleSize(parseInt(e.target.value))}>
+                                            <option value="#" selected={data['sizeSelected']==0}>Select a size</option>
+                                                {data['pSize'].map((e,i)=>{
+                                                return (
+                                                    <option value={e.id}>{e.size.name}</option>
+                                                );
+                                                })   }
+                                        </select>
+                                    ) 
                                 }
-                            </select>
                             </div>{/* End .select-custom */}
                             <a href="#" className="size-guide mr-4"><i className="icon-th-list" />size guide</a>
                             {errMess['size']?(

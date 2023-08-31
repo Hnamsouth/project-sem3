@@ -111,16 +111,16 @@ const UserCarts = ()=>{
                     </table>
                     <div className="cart-bottom">
                         <div className="cart-discount">
-                        <form action="#">
-                            <div className="input-group">
-                            <input type="text" className="form-control" required placeholder="coupon code" />
-                            <div className="input-group-append">
-                                <button className="btn btn-outline-primary-2" type="submit"><i className="icon-long-arrow-right" /></button>
-                            </div>{/* .End .input-group-append */}
-                            </div>{/* End .input-group */}
-                        </form>
-                        </div>{/* End .cart-discount */}
-                    </div>{/* End .cart-bottom */}
+                            <form action="#">
+                                <div className="input-group">
+                                    <input type="text" className="form-control" required placeholder="coupon code" />
+                                    <div className="input-group-append">
+                                        <button className="btn btn-outline-primary-2" type="submit"><i className="icon-long-arrow-right" /></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     </div>{/* End .col-lg-9 */}
                     <aside className="col-lg-3">
                     <div className="summary summary-cart">

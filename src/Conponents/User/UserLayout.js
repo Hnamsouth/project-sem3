@@ -3,7 +3,8 @@ import FOOTER from "./footer";
 import HEADER from "./header";
 import React,{useEffect, useState} from "react";
 import { Helmet } from "react-helmet";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const UserLayout =  (props)=>{
@@ -11,6 +12,18 @@ const UserLayout =  (props)=>{
     
     return (
             <>
+                <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                />
             <Helmet>
                 {route=="/"?
                     <link rel="stylesheet" href="../user/assets/css/demos/demo-21.css" />:""

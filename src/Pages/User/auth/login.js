@@ -26,6 +26,7 @@ const Login =()=>{
     const  LoginSubmit = async (data,{logingg})=>{
         dispatch({type:"SHOW_LOADING"});
         let rs = await ULogin(data,logingg?true:false);
+        console.log(rs)
         if(!rs.token) {
             dispatch({type:"HIDE_LOADING"});
             alert("Tài khoản hoặc mật khẩu không đúng");
@@ -34,7 +35,8 @@ const Login =()=>{
         dispatch({type:"ADD_TOKEN",payload:rs.token})
         api.defaults.headers.common["Authorization"]=`Bearer ${rs.token}`
         localStorage.setItem("token",rs.token)
-        dispatch({type:"SET_USER",payload:await getProfile()})
+        const profile = await getProfile();
+        dispatch({type:"SET_USER",payload:profile})
 
         setTimeout(()=>{
             dispatch({type:"HIDE_LOADING"});
