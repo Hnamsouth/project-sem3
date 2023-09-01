@@ -64,3 +64,7 @@
   color: #fff;
   background-color: #66f;
 }
+.text-trans-none {
+  text-transform: none !important ;
+  border-bottom: 0.1rem solid #ebebeb !important;
+}

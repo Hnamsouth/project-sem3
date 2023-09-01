@@ -23,18 +23,18 @@ import UserCarts from './Pages/Cart/UserCarts';
 const router = createBrowserRouter([
   prepareRouter("/",<HomeU/>,false),
   prepareRouter("/login",<RegisterLogin/>,false),
-  prepareRouter("/u-profile",<Uprofile/>,true),
+  prepareRouter("/u-profile",<Uprofile/>,false),
   prepareRouter("/cart",<UserCarts/>,true),
   prepareRouter("/favorite",<Favorite/>,true),
-  prepareRouter("/checkout",<Checkout/>,false),
+  prepareRouter("/checkout",<Checkout/>,true),
   prepareRouter("/product/:id",<ProductDetail/>,false),
   prepareRouter("*",<NotFound/>,false),
 ]);
 
-
 function App() {
   const [state,dispatch]=useReducer(reducer,STATE);   
   const CheckAuth= async ()=>{
+    dispatch({type:"SHOW_LOADING"})
     const rs= await CheckToken();
     if(rs){
       if(state.User.profile==null){
@@ -43,6 +43,7 @@ function App() {
     }else{
       dispatch({type:"SET_USER",payload:Iuser})
     }
+    dispatch({type:"HIDE_LOADING"})
   }
   useEffect(()=>{
     CheckAuth();

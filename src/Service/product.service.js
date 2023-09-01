@@ -8,6 +8,6 @@ export const getProduct = async (id)=>{
         const rs = await api.get(url);
         return rs.data;
     } catch (error) {
-        return error;
+        return false;
     }
 }

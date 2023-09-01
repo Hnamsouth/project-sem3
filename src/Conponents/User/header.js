@@ -28,7 +28,7 @@ const HEADER = ()=>{
         setNav(rs);
     } 
     useEffect(()=>{
-        console.log(state.User)
+        console.log(state)
         GetNav();
     },[])
     // useEffect(()=>{
@@ -230,13 +230,13 @@ const HEADER = ()=>{
                                     <div className="wishlist">
                                         <Link to={"/favorite"} title="Wishlist">
                                             <i className="icon-heart-o" />
-                                            <span className="wishlist-count">{state.User.favorite && (state.User.favorite.length>0?state.User.favorite.length:0)}</span>
+                                            <span className="wishlist-count">{state.User.favorite?.length>0?state.User.favorite.length:0}</span>
                                         </Link>
                                     </div>
                                     <div className="dropdown cart-dropdown">
                                         <Link to={"/cart"} className="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                             <i className="icon-shopping-cart" />
-                                            <span className="cart-count">{state.User.cart && (state.User.cart.length>0?state.User.cart.length:0)}</span>
+                                            <span className="cart-count">{state.User.cart?.length>0?state.User.cart.length:0}</span>
                                         </Link>
                                         {/* <div className="dropdown-menu dropdown-menu-right">
                                             <div className="dropdown-cart-products">
