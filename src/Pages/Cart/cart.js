@@ -93,7 +93,7 @@ const Cart = () => {
                                                                         </h3>
                                                                     </div>
                                                                 </td>
-                                                                <td class="price-col">${c.product.price}</td>
+                                                                <td className="price-col">${c.product.price}</td>
                                                                 <td class="quantity-col">
                                                                     <InputGroup>
                                                                         <InputGroup.Text onClick={() => onQuantityChange("decrease",c.id)} style={{ cursor: "pointer", background: "none",borderRadius: 0}}><Dash /></InputGroup.Text>
