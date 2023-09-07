@@ -10,7 +10,8 @@ const STATE={
     userStyle:null,
     AuthModal:false,
     AuthForm:true,
-    User:Iuser
+    User:Iuser,
+    Nav:[]
 }
 
 

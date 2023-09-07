@@ -1,6 +1,4 @@
 import Modal from 'react-modal';
-import React,{useContext, useState} from 'react';
-import UserContext from '../../../context/userContext';
 import RegisterLogin from './RegisterLogin';
 
 const customStyles = {
@@ -24,10 +22,7 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-const AuthModal =()=>{
-    let subtitle;
-    const {state,dispatch}=useContext(UserContext)
- 
+const AuthModal =({state})=>{
     return (<div>
         <Modal
             isOpen={state.AuthModal}

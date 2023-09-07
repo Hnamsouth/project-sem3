@@ -17,6 +17,9 @@ import RegisterLogin from './Pages/User/auth/RegisterLogin';
 import Loading from './Conponents/loading';
 import ProductDetail from './Pages/Product/pDetail';
 import UserCarts from './Pages/Cart/UserCarts';
+import { getNavData } from './Service/app.service';
+import Shop from './Pages/Product/shop';
+import OffExample from './Pages/Product/offcanvas';
 
 
 //  declare route
@@ -26,9 +29,13 @@ const router = createBrowserRouter([
   prepareRouter("/u-profile",<Uprofile/>,false),
   prepareRouter("/cart",<UserCarts/>,true),
   prepareRouter("/favorite",<Favorite/>,true),
-  prepareRouter("/checkout",<Checkout/>,true),
+  prepareRouter("/checkout",<Checkout/>,false),
   prepareRouter("/product/:id",<ProductDetail/>,false),
+  prepareRouter("/shop",<Shop/>,false),
   prepareRouter("*",<NotFound/>,false),
+  {
+    path:"/demo",element:<OffExample/>
+  }
 ]);
 
 function App() {
@@ -36,6 +43,7 @@ function App() {
   const CheckAuth= async ()=>{
     dispatch({type:"SHOW_LOADING"})
     const rs= await CheckToken();
+    const nav = await getNavData();
     if(rs){
       if(state.User.profile==null){
         dispatch({type:"SET_USER",payload:await getProfile()})
@@ -43,7 +51,9 @@ function App() {
     }else{
       dispatch({type:"SET_USER",payload:Iuser})
     }
+    dispatch({type:"SET_NAV",payload:nav})
     dispatch({type:"HIDE_LOADING"})
+    return;
   }
   useEffect(()=>{
     CheckAuth();

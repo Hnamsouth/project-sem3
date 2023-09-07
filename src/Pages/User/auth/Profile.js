@@ -1,34 +1,37 @@
 
-import React,{useContext,useState,useEffect} from "react";
+import React,{useContext,useEffect} from "react";
 import UserContext from "../../../context/userContext";
-import jwt_decode from "jwt-decode";
-import { getProfile } from "../../../Service/auth.service";
+import Pusher from 'pusher-js';
 
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import UserOrder from "./component/order";
+import { Link } from "react-router-dom";
+import { getProfile } from "../../../Service/auth.service";
 const Uprofile = (props)=>{
     const {state,dispatch}=useContext(UserContext);
 
+    const p = new Pusher('47e4e48aead7fea024b6', {
+        cluster: 'ap1',
+        encrypted: true // Use SSL
+    });
 
-    const loadScript = url =>{
-        const script = document.createElement("script");
-        script.src=url;
-        script.type ="text/javascript";
-        document.body.appendChild(script);
-        return ()=>{
-            document.body.removeChild(script)
-        }
+    
+    const ListenUserInfo = async ()=>{
+        const channel = p.subscribe('to-client');
+        channel.bind('user-update',async function(rs) {
+            dispatch({type:"SET_USER",payload:await getProfile()})
+        });
+        return () => {
+            p.unsubscribe('user-update');
+        };
     }
-    const load = ()=>{
-        loadScript("/user/assets/js/demos/main.js");
-    }
+
 
     useEffect( ()=>{
-    //    let l= load();
-    
+        ListenUserInfo()
     },[])
 
     return (
@@ -42,8 +45,8 @@ const Uprofile = (props)=>{
             <nav aria-label="breadcrumb" className="breadcrumb-nav mb-3">
                 <div className="container">
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li className="breadcrumb-item"><a href="#">Shop</a></li>
+                    <li className="breadcrumb-item"><Link to={'/'}>Home</Link></li>
+                    <li className="breadcrumb-item"><Link to="#">Shop</Link></li>
                     <li className="breadcrumb-item active" aria-current="page">My Account</li>
                 </ol>
                 </div>
@@ -79,7 +82,7 @@ const Uprofile = (props)=>{
                                             First tab content
                                         </Tab.Pane>
                                         <Tab.Pane className="fade"  eventKey="order">
-                                            <UserOrder/>
+                                            <UserOrder state={state} dispatch={dispatch}/>
                                         </Tab.Pane>
                                         <Tab.Pane className="fade"  eventKey="review">
                                             thirst tab content

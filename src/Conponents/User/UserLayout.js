@@ -205,7 +205,7 @@ const UserLayout =  (props)=>{
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                </div>
                         <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
                             <div class="row justify-content-center">
                                 <div class="col-10">

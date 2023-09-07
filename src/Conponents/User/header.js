@@ -2,20 +2,56 @@ import React, { useContext, useState ,useEffect} from 'react';
 import UserContext from '../../context/userContext';
 import AuthModal from '../../Pages/User/auth/AuthModal';
 import { Link } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 import api from '../../Service/api';
 import { useNavigate  } from 'react-router-dom';
 import { getNavData } from '../../Service/app.service';
 import { Iuser } from '../../context/initState';
 
+import Modal from 'react-modal';
+import { Card, Col, Image, Row } from 'react-bootstrap';
+import { searchProduct } from '../../Service/product.service';
+
+const customStyles = {
+    content:{
+        position: "absolute",
+        border:"none",
+        background:"none",
+        overflow:"hiden",
+        padding:0,
+        top:"60px",
+        left:0,
+        right:0,
+        width: "100%",
+        height: "100%"
+    },
+    overlay:{
+        "background-color": "rgb(75 75 75 / 48%)",
+        "z-index": "1050",
+    }
+};
+
+Modal.setAppElement('#root');
+
 
 const HEADER = ()=>{
     const {state,dispatch}=useContext(UserContext);
-    const [Nav,setNav]=useState([]);
+    const [modalShow, setModalShow] = React.useState(false);
+    const [search,setSearch]=useState({data:[],text:""});
     const navigate = useNavigate();
+
     const showModal = () => {
         dispatch({ type: "SHOW_AUTH_MODAL" });
     }
+    const handleSearch = async (text)=>{
+
+        let rs = await searchProduct(text);
+        if(rs){
+            return  setSearch({data:rs,text:text});
+        }
+        setSearch({data:[],text:text});
+        console.log(rs)
+    }
+
     const LogOut = ()=>{
         state.token="";
         api.defaults.headers.common["Authorization"]="";
@@ -23,17 +59,9 @@ const HEADER = ()=>{
         dispatch({type:"SET_USER",payload:Iuser})
         navigate("/");
     }
-    const GetNav = async ()=>{
-        const rs = await getNavData();
-        setNav(rs);
-    } 
-    useEffect(()=>{
-        console.log(state)
-        GetNav();
-    },[])
-    // useEffect(()=>{
 
-    // },[state.User])
+
+
     return (
         <header className="header">
                         <div className="header-top">
@@ -69,7 +97,7 @@ const HEADER = ()=>{
                                                 <li><a href="contact.html">Contact Us</a></li>
                                                 {state.User.profile==null ? (<li>
                                                         <a type='button' onClick={showModal}><i className="icon-user"></i>Login</a>
-                                                        <AuthModal/>
+                                                        <AuthModal state={state}/>
                                                     </li>):""}
                                             </ul>
                                         </li>
@@ -100,7 +128,7 @@ const HEADER = ()=>{
                                     </Link>
                                     <nav className="main-nav">
                                         <ul className="menu sf-arrows">
-                                            { Nav.length>0 && Nav.map((e,i)=>{
+                                            { state.Nav.length>0 && state.Nav.map((e,i)=>{
                                                 return (
                                                     <li className={i==0?"megamenu-container active":""} key={i}>
                                                         <a href="index.html" className="sf-with-ul">{e.title}</a>
@@ -130,27 +158,7 @@ const HEADER = ()=>{
                                                 );
                                             })}
                                             <li>
-                                                <a href="#" className="sf-with-ul">Pages</a>
-                                                <ul>
-                                                    <li>
-                                                        <a href="about.html" className="sf-with-ul">About</a>
-                                                        <ul>
-                                                            <li><a href="about.html">About 01</a></li>
-                                                            <li><a href="about-2.html">About 02</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li>
-                                                        <a href="contact.html" className="sf-with-ul">Contact</a>
-                                                        <ul>
-                                                            <li><a href="contact.html">Contact 01</a></li>
-                                                            <li><a href="contact-2.html">Contact 02</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="login.html">Login</a></li>
-                                                    <li><a href="faq.html">FAQs</a></li>
-                                                    <li><a href="404.html">Error 404</a></li>
-                                                    <li><a href="coming-soon.html">Coming Soon</a></li>
-                                                </ul>
+                                                <Link to={"/shop"} className="sf-with-ul">SHOP</Link>
                                             </li>
                                             <li>
                                                 <a href="blog.html" className="sf-with-ul">Blog</a>
@@ -219,7 +227,7 @@ const HEADER = ()=>{
 
                                 <div className="header-right">
                                     <div className="header-search">
-                                        <a href="#" className="search-toggle" role="button" title="Search"><i className="icon-search" /></a>
+                                        <a className='search-toggle' role='button' onClick={() => setModalShow(true)}><i className="icon-search" /></a>
                                         <form action="#" method="get">
                                             <div className="header-search-wrapper">
                                             <label htmlFor="q" className="sr-only">Search</label>
@@ -238,81 +246,63 @@ const HEADER = ()=>{
                                             <i className="icon-shopping-cart" />
                                             <span className="cart-count">{state.User.cart?.length>0?state.User.cart.length:0}</span>
                                         </Link>
-                                        {/* <div className="dropdown-menu dropdown-menu-right">
-                                            <div className="dropdown-cart-products">
-                                            <div className="product">
-                                                <div className="product-cart-details">
-                                                <h4 className="product-title">
-                                                    <a href="product.html">Beige knitted elastic runner shoes</a>
-                                                </h4>
-                                                <span className="cart-product-info">
-                                                    <span className="cart-product-qty">1</span>
-                                                    x $84.00
-                                                </span>
-                                                </div>
-                                                <figure className="product-image-container">
-                                                <a href="product.html" className="product-image">
-                                                    <img src="assets/images/products/cart/product-1.jpg" alt="product" />
-                                                </a>
-                                                </figure>
-                                                <a href="#" className="btn-remove" title="Remove Product"><i className="icon-close" /></a>
-                                            </div>
-                                            <div className="product">
-                                                <div className="product-cart-details">
-                                                <h4 className="product-title">
-                                                    <a href="product.html">Blue utility pinafore denim dress</a>
-                                                </h4>
-                                                <span className="cart-product-info">
-                                                    <span className="cart-product-qty">1</span>
-                                                    x $76.00
-                                                </span>
-                                                </div>
-                                                <figure className="product-image-container">
-                                                <a href="product.html" className="product-image">
-                                                    <img src="assets/images/products/cart/product-2.jpg" alt="product" />
-                                                </a>
-                                                </figure>
-                                                <a href="#" className="btn-remove" title="Remove Product"><i className="icon-close" /></a>
-                                            </div>
-                                            </div>
-                                            <div className="dropdown-cart-total">
-                                            <span>Total</span>
-                                            <span className="cart-total-price">$160.00</span>
-                                            </div>
-                                            <div className="dropdown-cart-action">
-                                            <a href="cart.html" className="btn btn-primary">View Cart</a>
-                                            <a href="checkout.html" className="btn btn-outline-primary-2"><span>Checkout</span><i className="icon-long-arrow-right" /></a>
-                                            </div>
-                                        </div> */}
                                     </div>
                                 </div>
-
-                                {/* <div className="header-right">
-                                    <div className="header-search">
-                                        <a href="#" className="search-toggle" role="button" title="Search"><i className="icon-search"></i></a>
-                                        <form action="#" method="get">
-                                            <div className="header-search-wrapper">
-                                                <label for="q" className="sr-only">Search</label>
-                                                <input type="search" className="form-control" name="q" id="q" placeholder="Search in..." required />
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div className="wishlist">
-                                        <Link to={"/favorite"}>
-                                            <i className="icon-heart-o"></i>
-                                            <span className="wishlist-count" style={{ marginBottom: 22, marginLeft: 44, position: "absolute" }}>{favorite.length>0?favorite.length:0}</span>
-                                        </Link>
-                                    </div>
-
-                                    <div className="dropdown cart-dropdown">
-                                        <Link to={"/cart"} className="dropdown-toggle">
-                                            <i className="icon-shopping-cart"></i>
-                                            <span className="cart-count" style={{ marginBottom: 22, marginLeft: 19, position: "absolute" }}>{cart.length > 0 ? cart.length : 0}</span>
-                                        </Link>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
+                            <Modal
+                            isOpen={modalShow}
+                            style={customStyles}
+                            contentLabel="Example Modal"
+                            >
+                                <Card className='container-search p-3'>
+                                    <Card.Header>
+                                        <button type='button' onClick={()=>setModalShow(false)} className='close' aria-label="Close"><i className='icon-close'></i></button>
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <Row className=' justify-content-center search-bar'>
+                                            <Col sm={11}>
+                                                <input type='text' className='form-control ip-search' name='search' onChange={(e)=>handleSearch(e.target.value)} />
+                                                <i class="icon-search"></i>
+                                            </Col>
+                                        </Row>
+                                        <Row  className=' justify-content-center mb-2'>
+                                            {search['data'].length > 0 && search['data'].map((e,i)=>{
+                                                return (
+                                                    <Col sm={11} className='mb-1'>
+                                                        <Row>
+                                                            <Col sm={2}>
+                                                                <Image src={e.productColors[0].productColorImages[0].url} width={60} height={60} thumbnail alt='asd'/>
+                                                            </Col>
+                                                            <Col sm={9}>
+                                                                <Row className='align-items-center'>
+                                                                    <Col>
+                                                                        <Row className=' flex-column'>
+                                                                            <Col>
+                                                                            <span className=' text-light'>{e.categoryDetail.category.name}</span>
+                                                                            </Col>
+                                                                            <Col>
+                                                                                <h6>{e.name}</h6>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    </Col>
+                                                                    <Col>
+                                                                        ${e.price}
+                                                                    </Col>
+                                                                </Row>
+                                                                
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                );
+                                            })}
+                                        </Row>
+                                        {search['text'] && (
+                                            <Link > <h4>See All "{search['text']}"</h4></Link>
+                                        )}
+                                    </Card.Body>
+                                </Card>
+                            </Modal>
                     </header>
     );
 }

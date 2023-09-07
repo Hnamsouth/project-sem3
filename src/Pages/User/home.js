@@ -433,10 +433,16 @@ const HomeU = () => {
                                     <figure className="product-media">
                                         <span className="product-label label-sale">Sale</span>
                                         <Link to={`/product/${p.id}`}>
-                                            <img src={p.productColors[0].productColorImages[0].url} alt="Product image" className="product-image" style={{ maxWidth:333 +"px",maxHeight:333 +"px"}} />
-                                            <img src={p.productColors[0].productColorImages[1].url} alt="Product image" className="product-image-hover" style={{maxWidth:333 +"px",maxHeight:333 +"px"}} />
+                                            <img src={p.productColors[0]?.productColorImages[0]?.url} alt="Product image" className="product-image" style={{ maxWidth:333 +"px",maxHeight:333 +"px"}} />
+                                            <img src={p.productColors[0]?.productColorImages[1]?.url} alt="Product image" className="product-image-hover" style={{maxWidth:333 +"px",maxHeight:333 +"px"}} />
                                         </Link>
+                                        <div className="product-action-vertical">
+                                                    <a href="#" className="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                                    <a href="popup/quickView.html" className="btn-product-icon btn-quickview" title="Quick view"><span></span></a>
+                                                    {/* <a href="#" className="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> */}
+                                                    </div>
                                     </figure>
+                                    
                                     <div className="product-body text-center">
                                         <div className="product-cat">
                                             <a href="#">{p.categoryDetail.category.name}</a>
@@ -473,10 +479,15 @@ const HomeU = () => {
                                     <figure className="product-media">
                                         <span className="product-label label-sale">Sale</span>
                                         <Link to={`/product/${p.id}`}>
-                                            <img src={p.productColors[0].productColorImages[0].url} alt="Product image" className="product-image" style={{ maxWidth:333 +"px",maxHeight:333 +"px"}} />
-                                            <img src={p.productColors[0].productColorImages[1].url} alt="Product image" className="product-image-hover" style={{maxWidth:333 +"px",maxHeight:333 +"px"}} />
+                                            <img src={p.productColors[0]?.productColorImages[0]?.url} alt="Product image" className="product-image" style={{ maxWidth:333 +"px",maxHeight:333 +"px"}} />
+                                            <img src={p.productColors[0]?.productColorImages[1]?.url} alt="Product image" className="product-image-hover" style={{maxWidth:333 +"px",maxHeight:333 +"px"}} />
                                         </Link>
                                     </figure>
+                                    <div className="product-action-vertical">
+                                                    <a href="#" className="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                                    <a href="popup/quickView.html" className="btn-product-icon btn-quickview" title="Quick view"><span></span></a>
+                                                    {/* <a href="#" className="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a> */}
+                                                    </div>
                                     <div className="product-body text-center">
                                         <div className="product-cat">
                                             <a href="#">{p.categoryDetail.category.name}</a>

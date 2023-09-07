@@ -33,6 +33,9 @@ const reducer=(state,action)=>{// custom action: {type:...,payload:...}
         case "SET_USER" :return {
             ...state,User:action.payload
         };
+        case "SET_NAV" :return {
+            ...state,Nav:action.payload
+        };
 
         default: return state;
     }

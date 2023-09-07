@@ -7,6 +7,7 @@ import UserContext from "../../context/userContext";
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createOrder } from "../../Service/order.service";
+import { Button } from "react-bootstrap";
 
 const initialOptions = {
     clientId: "ARhIk8S1SjumPvjUXqmKwGEGHXs7sy3qnhYMOkOdiC51L3yzfIT6Py5ZgLWkjlhf8JZGcaK1KSYzg-vb",
@@ -17,10 +18,10 @@ const initialOptions = {
 const Checkout = () => {
     const {state,dispatch}=useContext(UserContext);
     const [subtotal,setSubtotal]=useState(0);
-    const [paySts,setPaySts]=useState(false);
+    const [paySts,setPaySts]=useState({BtnPaypal:false,FinishBtn:false});
     let navigate = useNavigate();
     const [Orderdata,setData]=useState({
-        Firstname:'',Laststname:'',Country:'',Street:'',City:'',District:'',Postcode:0,Phone:'',Email:'',CouponCode:'',
+      id:0, Firstname:'',Laststname:'',Country:'',Street:'',City:'',District:'',Postcode:0,Phone:'',Email:'',CouponCode:'',OrderIdPaypal:'8AU65331T1967062U',Total:0
     })
     const [err,setErr]=useState({
         Firstname:false,Laststname:false,Country:false,Street:false,City:false,District:false,Postcode:false,Phone:false,Email:false,
@@ -42,20 +43,20 @@ const Checkout = () => {
         console.log(Orderdata)
     }
     const CheckOrderData = ()=>{
-        console.log(Orderdata)
         let check =false;
          Object.keys(Orderdata).forEach(e=>{
-            if(Orderdata[e]==='' && e!='CouponCode'){
+            if(Orderdata[e]==='' && e!=='CouponCode'){
                 check= true;
             }
         })
         return check;
     }
     const handleOrder =async ()=>{
+        console.log(Orderdata)
+        Orderdata['Total']=subtotal;
         let check = CheckOrderData();
         if(check)  return notify("Please enter your full payment information");
         let rs = await createOrder(Orderdata);
-        console.log(Orderdata)
         console.log(rs,check)
         if(rs){
             state.User.order.push(rs);
@@ -178,48 +179,48 @@ const Checkout = () => {
                             </tr>{/* End .summary-total */}
                         </tbody>
                         </table>{/* End .table table-summary */}
+                        {/* <button type="button" className="btn btn-outline-primary-2 btn-order btn-block" onClick={()=>CheckOut()}>Check Out</button> */}
+
                         {
-                            !paySts && (
+                            !paySts.BtnPaypal && (
                                 <PayPalScriptProvider options={initialOptions}>
-                                    <PayPalButtons  createOrder={(data, actions) => {
+                                    <PayPalButtons createOrder={(data, actions) => {
                                         return actions.order.create({
                                             purchase_units: [{
                                                 description: "safasgagas",
                                                 "amount": {
-                                                    "value":1
+                                                    "value": subtotal
                                                 },
                                                 }]
                                             });
                                         }}
                                         onApprove={async (data, actions) => {
                                             const order = await actions.order.capture(); 
-                                            console.log("order", order);
-                                            setPaySts(true)
+                                            // setData((prev)=>({...prev,OrderIdPaypal:order.id}))
+                                            // setPaySts({...paySts,BtnPaypal:true})
+                                            console.log(order);
                                             }}
                                         onError={(err) => {
                                             console.error("PayPal Checkout onError", err);
                                         }}
                                         
-                                        onClick={(data, actions)=> {
-                                            // handleOrder()
-                                        }}
                                         />
                             </PayPalScriptProvider>
                             )
                         }
                         
                         {
-                            paySts && (
-                                <a type="button" onClick={()=>handleOrder()} className="btn btn-outline-primary-2 btn-order btn-block">FINISH CHECKOUT</a>
+                            paySts.BtnPaypal && (
+                                <Button type="button" onClick={()=>handleOrder()} className="btn btn-outline-primary-2 btn-order btn-block">FINISH CHECKOUT</Button>
                             )
                         }
-                        <a type="button" onClick={()=>handleOrder()} className="btn btn-outline-primary-2 btn-order btn-block">FINISH CHECKOUT</a>
-                    </div>{/* End .summary */}
-                    </aside>{/* End .col-lg-3 */}
+                        {/* <a type="button" onClick={()=>handleOrder()} className="btn btn-outline-primary-2 btn-order btn-block">FINISH CHECKOUT</a> */}
+                    </div>
+                    </aside>
                 </div>
             </form>
-        </div>{/* End .container */}
-        </div>{/* End .checkout */}
+        </div>
+        </div>
   </div>
     </div>
  
