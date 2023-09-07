@@ -8,7 +8,6 @@ const UserCarts = ()=>{
     const {state,dispatch}=useContext(UserContext);
     const [subtotal,setSubtotal]=useState(0)
     const handleBuyQty = async (data)=>{
-        console.log(state.User.cart)
         if(data.cart.productSize.qty<(data.cart.buyQty+data.qty) || (data.cart.buyQty+data.qty) < 1 ){
             // show err
             alert(123)
@@ -32,6 +31,7 @@ const UserCarts = ()=>{
     useEffect(()=>{
         Subtotal(state.User.cart,setSubtotal)
     },[state])
+
 
 
     return (
