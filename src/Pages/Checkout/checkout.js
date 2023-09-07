@@ -6,7 +6,7 @@ import UserContext from "../../context/userContext";
 
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createOrder } from "../../Service/order.service";
+import { PaymentOrder, createOrder } from "../../Service/order.service";
 import { Button } from "react-bootstrap";
 
 const initialOptions = {
@@ -18,7 +18,7 @@ const initialOptions = {
 const Checkout = () => {
     const {state,dispatch}=useContext(UserContext);
     const [subtotal,setSubtotal]=useState(0);
-    const [paySts,setPaySts]=useState({BtnPaypal:false,FinishBtn:false});
+    const [paySts,setPaySts]=useState({BtnPaypal:true,FinishBtn:false});
     let navigate = useNavigate();
     const [Orderdata,setData]=useState({
       id:0, Firstname:'',Laststname:'',Country:'',Street:'',City:'',District:'',Postcode:0,Phone:'',Email:'',CouponCode:'',OrderIdPaypal:'8AU65331T1967062U',Total:0
@@ -52,20 +52,28 @@ const Checkout = () => {
         return check;
     }
     const handleOrder =async ()=>{
-        console.log(Orderdata)
         Orderdata['Total']=subtotal;
         let check = CheckOrderData();
         if(check)  return notify("Please enter your full payment information");
         let rs = await createOrder(Orderdata);
-        console.log(rs,check)
         if(rs){
-            state.User.order.push(rs);
-            state.User.cart=[];
-            dispatch({type:"SET_USER",payload:state.User})
-            notify("Thanks")
-            navigate("/u-profile")
+            // state.User.order.push(rs);
+            // state.User.cart=[];
+            // dispatch({type:"SET_USER",payload:state.User})
+            // notify("Thanks")
+            // navigate("/u-profile")
+            setData({...Orderdata,id:rs.id});
+            setPaySts({...paySts,BtnPaypal:false})
         }
     }
+
+    const Payment = async (paypalOrderId)=>{
+        const rs = await PaymentOrder(Orderdata,paypalOrderId);
+        if(rs) return navigate("/u-profile");
+        notify("Payment faild")
+    }
+
+
     const CouponSubmit =async (e)=>{
         e.preventDefault();
         console.log(Orderdata['CouponCode'])
@@ -196,9 +204,8 @@ const Checkout = () => {
                                         }}
                                         onApprove={async (data, actions) => {
                                             const order = await actions.order.capture(); 
-                                            // setData((prev)=>({...prev,OrderIdPaypal:order.id}))
-                                            // setPaySts({...paySts,BtnPaypal:true})
-                                            console.log(order);
+                                            setData((prev)=>({...prev,OrderIdPaypal:order.id}))
+                                            Payment(order.id);
                                             }}
                                         onError={(err) => {
                                             console.error("PayPal Checkout onError", err);
@@ -211,7 +218,7 @@ const Checkout = () => {
                         
                         {
                             paySts.BtnPaypal && (
-                                <Button type="button" onClick={()=>handleOrder()} className="btn btn-outline-primary-2 btn-order btn-block">FINISH CHECKOUT</Button>
+                                <Button type="button" onClick={()=>handleOrder()} className="btn btn-outline-primary-2 btn-order btn-block">CHECKOUT</Button>
                             )
                         }
                         {/* <a type="button" onClick={()=>handleOrder()} className="btn btn-outline-primary-2 btn-order btn-block">FINISH CHECKOUT</a> */}

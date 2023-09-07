@@ -21,3 +21,12 @@ export const cancelOrder = async (id)=>{
     }
 }
 
+export const PaymentOrder = async (id, orderPaypalId)=>{
+    try {
+        const rs = await api.put(url+`/payment?id=${id}&OrderIdPaypal=${orderPaypalId}`)
+        return rs.data;
+    } catch (error) {
+        return false;
+    }
+}
+
